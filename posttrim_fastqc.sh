@@ -24,5 +24,11 @@ echo ${sample} "finished fastqc"
 done
 
 
+#######################################################################################
+
 
 #######################################################################################
+#combine
+#######################################################################################
+
+multiqc output/posttrim --filename output/PosttrimFastQC_multiqc_report.html --ignore-samples Undetermined* --interactive
