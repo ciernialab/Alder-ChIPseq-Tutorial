@@ -179,11 +179,21 @@ Repeat the QC on the post trim files and compare the output to the pretrim.
 
     sbatch posttrim_fastqc.sh
 
-## 7. QC of the Fastq Files: Contamination Screening - Add Fastqscreen info here
+## 8. QC of the Fastq Files: Contamination Screening - Add Fastqscreen info here
 
-## 8. Align to mm10 genome using Bowtie2
+
+
+## 9. Align to mm10 genome using Bowtie2
+We now will align the trimmed fastq files to the mm10 genome using bowtie2. Bowtie2 needs to know where the index files are located. We specified this in our bash_profile. Check the location:
+
+    ls $BT2_MM10
     
+Run the script to align. This takes significant time and memory. Output logs are placed in output/bowtielogs <br/>
 
+
+    sbatch Bowtie2alignment.sh
+
+Check the multiqc output to look at alignment rates: bowtie2_multiqc_report.html
 
 
 
