@@ -229,14 +229,30 @@ For PE reads are centered with respect to the fragment length. For paired-end da
 
 multiBamSummary bins --bamfiles file1.bam file2.bam -o results.npz --blackListFileName -p 20 --centerReads --labels 
 
-    multiBamSummary bins --bamfiles SRR6326785_dedup.bam SRR6326800_dedup.bam SRR6326801_dedup.bam SRR6326796_dedup.bam SRR6326798_dedup.bam SRR6326787_dedup.bam SRR6326789_dedup.bam SRR6326791_dedup.bam SRR6326793_dedup.bam SRR6326795_dedup.bam SRR6326797_dedup.bam SRR6326799_dedup.bam --labels KO KO KO WT WT KOInput KOInput WTInput WTInput WTInput WTInput WTInput -o H3K27ac_BamSum10kbbins.npz --blackListFileName $BL/mm10.blacklist.bed -p 20 --centerReads 
+    multiBamSummary bins --bamfiles aligned/SRR6326785_dedup.bam aligned/SRR6326800_dedup.bam aligned/SRR6326801_dedup.bam aligned/SRR6326796_dedup.bam aligned/SRR6326798_dedup.bam aligned/SRR6326787_dedup.bam aligned/SRR6326789_dedup.bam aligned/SRR6326791_dedup.bam aligned/SRR6326793_dedup.bam aligned/SRR6326795_dedup.bam aligned/SRR6326797_dedup.bam aligned/SRR6326799_dedup.bam --labels KO KO KO WT WT KOInput KOInput WTInput WTInput WTInput WTInput WTInput -o Deeptools/H3K27ac_BamSum10kbbins.npz --blackListFileName $BL/mm10.blacklist.bed -p 20 --centerReads
+
     
-    multiBamSummary bins --bamfiles SRR6326786_dedup.bam RR6326788_dedup.bam SRR6326790_dedup.bam SRR6326792_dedup.bam SRR6326794_dedup.bam SRR6326787_dedup.bam SRR6326789_dedup.bam SRR6326791_dedup.bam SRR6326793_dedup.bam SRR6326795_dedup.bam SRR6326797_dedup.bam SRR6326799_dedup.bam --labels KO KO WT WT WT KOInput KOInput WTInput WTInput WTInput WTInput WTInput -o H3K9ac_BamSum10kbbins.npz --blackListFileName $BL/mm10.blacklist.bed -p 20 --centerReads 
+    multiBamSummary bins --bamfiles aligned/SRR6326786_dedup.bam RR6326788_dedup.bam aligned/SRR6326790_dedup.bam aligned/SRR6326792_dedup.bam aligned/SRR6326794_dedup.bam aligned/SRR6326787_dedup.bam aligned/SRR6326789_dedup.bam aligned/SRR6326791_dedup.bam aligned/SRR6326793_dedup.bam aligned/SRR6326795_dedup.bam aligned/SRR6326797_dedup.bam aligned/SRR6326799_dedup.bam --labels KO KO WT WT WT KOInput KOInput WTInput WTInput WTInput WTInput WTInput -o Deeptools/H3K9ac_BamSum10kbbins.npz --blackListFileName $BL/mm10.blacklist.bed -p 20 --centerReads 
   
 This takes a lot of memory so it is better if you run the above two commands using this script:
 
     sbatch BamSummary.sh
   
+  
+ Plot the correlation between samples as either a PCA or a Correlation Plot:
+ 
+ For H3K27ac:
+     
+     plotPCA -in Deeptools/H3K27ac_BamSum10kbbins.npz -o Deeptools/PCA_H3K27ac.pdf -T "PCA of Sequencing Depth Normalized Read Counts" --plotHeight 7 --plotWidth 9
+
+    plotCorrelation -in Deeptools/H3K27ac_BamSum10kbbins.npz --corMethod spearman --skipZeros --plotTitle "Spearman Correlation of Sequencing Depth Normalized Read Counts" --whatToPlot heatmap --colorMap RdYlBu --plotNumbers -o Deeptools/SpearmanCorr_H3K27ac.pdf
+    
+ For H3K27ac:
+     
+     plotPCA -in Deeptools/H3K9ac_BamSum10kbbins.npz -o Deeptools/PCA_H3K9ac.pdf -T "PCA of Sequencing Depth Normalized Read Counts" --plotHeight 7 --plotWidth 9
+
+    plotCorrelation -in Deeptools/H3K9ac_BamSum10kbbins.npz --corMethod spearman --skipZeros --plotTitle "Spearman Correlation of Sequencing Depth Normalized Read Counts" --whatToPlot heatmap --colorMap RdYlBu --plotNumbers -o Deeptools/SpearmanCorr_H3K9ac.pdf
+
 ### 2. Coverage check (plotCoverage). 
 To see how many bp in the genome are actually covered by (a good number) of sequencing reads, we use plotCoverage which generates two diagnostic plots that help us decide whether we need to sequence deeper or not. The option --ignoreDuplicates is particularly useful here!
 
@@ -250,7 +266,10 @@ Many sequencing protocols require several rounds of PCR-based DNA amplification,
 We do this quality control step to get a feeling for the signal-to-noise ratio in samples from ChIP-seq experiments. It is based on the insights published by Diaz et al.
 
 ### 5. Convert to Read Depth Normalized BigWigs 
-The deepTools modules bamCompare and bamCoverage not only allow for simple conversion of BAM to bigWig (or bedGraph for that matter), but also for normalization, such that different samples can be compared despite differences in their sequencing depth.
+Use BamCoverage to convert BAM to bigWig (or bedGraph for that matter), with normalization, such that different samples can be compared despite differences in their sequencing depth. The effective genome size is set for mappable part of mm10. It makes a normalized bigwig file for each SRR. Blacklist regions are excluded and reads are extended and centered. Averages in 10bp bins across the genome.
+
+    sbatch BamCoverageDeeptools.sh
+
 
 ### 6. TSS Heatmap Plots
 Plot Normalized signal over the TSS with computeMatrix, plotHeatmap and plotProfile.
