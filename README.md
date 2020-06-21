@@ -218,8 +218,25 @@ Check the multiqc: sam_multiqc_report.html
 ## 11. QC with Deeptools: https://deeptools.readthedocs.io/en/develop/content/example_usage.html#how-we-use-deeptools-for-chip-seq-analyses
 
 ### 1. Correlation between BAM files using multiBamSummary and plotCorrelation
-Together, these two modules perform a very basic test to see whether the sequenced and aligned reads meet your expectations. We use this check to assess reproducibility - either between replicates and/or between different experiments that might have used the same antibody or the same cell type, etc. For instance, replicates should correlate better than differently treated samples.
+Together, these two modules perform a very basic test to see whether the sequenced and aligned reads meet your expectations. We use this check to assess reproducibility - either between replicates and/or between different experiments that might have used the same antibody or the same cell type, etc. For instance, replicates should correlate better than differently treated samples.<br/>
 
+The coverage calculation is done for consecutive bins of equal size (10 kilobases by default). This mode is useful to assess the genome-wide similarity of BAM files. The bin size and distance between bins can be adjusted.<br/>
+
+Exclude black list regions: A BED or GTF file containing regions that should be excluded from all analyses. Currently this works by rejecting genomic chunks that happen to overlap an entry. Consequently, for BAM files, if a read partially overlaps a blacklisted region or a fragment spans over it, then the read/fragment might still be considered. Please note that you should adjust the effective genome size, if relevant.<br/>
+
+For PE reads are centered with respect to the fragment length. For paired-end data, the read is centered at the fragment length defined by the two ends of the fragment. For single-end data, the given fragment length is used. This option is useful to get a sharper signal around enriched regions.
+
+
+multiBamSummary bins --bamfiles file1.bam file2.bam -o results.npz --blackListFileName -p 20 --centerReads --labels 
+
+    multiBamSummary bins --bamfiles SRR6326785_dedup.bam SRR6326800_dedup.bam SRR6326801_dedup.bam SRR6326796_dedup.bam SRR6326798_dedup.bam SRR6326787_dedup.bam SRR6326789_dedup.bam SRR6326791_dedup.bam SRR6326793_dedup.bam SRR6326795_dedup.bam SRR6326797_dedup.bam SRR6326799_dedup.bam --labels KO KO KO WT WT KOInput KOInput WTInput WTInput WTInput WTInput WTInput -o H3K27ac_BamSum10kbbins.npz --blackListFileName $BL/mm10.blacklist.bed -p 20 --centerReads 
+    
+    multiBamSummary bins --bamfiles SRR6326786_dedup.bam RR6326788_dedup.bam SRR6326790_dedup.bam SRR6326792_dedup.bam SRR6326794_dedup.bam SRR6326787_dedup.bam SRR6326789_dedup.bam SRR6326791_dedup.bam SRR6326793_dedup.bam SRR6326795_dedup.bam SRR6326797_dedup.bam SRR6326799_dedup.bam --labels KO KO WT WT WT KOInput KOInput WTInput WTInput WTInput WTInput WTInput -o H3K9ac_BamSum10kbbins.npz --blackListFileName $BL/mm10.blacklist.bed -p 20 --centerReads 
+  
+This takes a lot of memory so it is better if you run the above two commands using this script:
+
+    sbatch BamSummary.sh
+  
 ### 2. Coverage check (plotCoverage). 
 To see how many bp in the genome are actually covered by (a good number) of sequencing reads, we use plotCoverage which generates two diagnostic plots that help us decide whether we need to sequence deeper or not. The option --ignoreDuplicates is particularly useful here!
 
