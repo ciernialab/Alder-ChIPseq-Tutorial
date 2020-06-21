@@ -65,7 +65,16 @@ Should now return
  
     export BT2_MM10=/alder/data/cbh/ciernia-data/genomes/bowtie2indexes/Mus_musculus/Ensembl/GRCm38/Sequence/Bowtie2Index
 
-## 4. Getting Setup on Alder: Installing HOMER
+## 4. Getting Setup on Alder: Installing Python Programs & HOMER
+
+### Multiqc and Deeptools Install
+We will use Multiqc and Deeptools for analysis and plotting. From their home directory, each user must install them using pip:
+
+    module load python/3.7.4
+    pip3.7 install --user multiqc
+    pip3.7 install --user deeptools
+    
+### HOMER Install
 This has already been done for you. But in case it does not work this is how the install was done. <br/>
 From within /alder/data/cbh/ciernia-data/pipeline-tools/    <br/>
 Run the following:
@@ -92,10 +101,7 @@ Mouse, Human and rat have been added:
 
 ### Loading in mm10 promoter set
   mouse promoter set ready in homer suite is mm9, need to load in mm10 version yourself
-  how to do it manually:
-
-### use the mm10.tss file included above
-  create custom promoter set for mm10 (can't use mm9)
+  how to do it manually using the mm10.tss file included to create custom promoter set for mm10:
 
     loadPromoters.pl -name mm10_promoters -org mouse -id refseq -genome mm10 -tss mm10.tss
 
@@ -224,7 +230,7 @@ SRR6326785 <br/>
 SRR6326800 <br/>
 SRR6326801 <br/>
 
-wT MG: <br/>
+WT MG: <br/>
 SRR6326796 <br/>
 SRR6326798 <br/>
 
