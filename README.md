@@ -25,23 +25,29 @@ This tutorial is for downloading published PE ChIPSeq files from GEO and process
    ``` 
     prefetch
   ``` 
+  
   You may get the following message:
-    ``` 
+  
+  ``` 
     This sra toolkit installation has not been configured.
     Before continuing, please run: vdb-config --interactive
     For more information, see https://www.ncbi.nlm.nih.gov/sra/docs/sra-cloud/
   ``` 
   Run:
-  ``` 
+ 
+ ``` 
     vdb-config —interactive
-  ``` 
-  This should open a dialogue box. Don’t change anything and hit "X" to exit
+ ``` 
   
+  This should open a dialogue box. Don’t change anything and hit "X" to exit
+ 
   ``` 
     prefetch
-  ``` 
-  Should now return
+ ``` 
+  
+Should now return
+ 
  ``` 
   Usage:
   prefetch [options] <SRA accession> [...]
-  ```
+ ```
