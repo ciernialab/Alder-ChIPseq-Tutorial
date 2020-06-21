@@ -80,7 +80,7 @@ Then add this to your bash_profile:
 
 Simply typing "findMotifs.pl" should work before running Homer
 
-#Installing HOMER genomes
+### Installing HOMER genomes
 
     perl configureHomer.pl -list
     
@@ -90,12 +90,12 @@ Mouse, Human and rat have been added:
     perl configureHomer.pl -install hg18
     perl configureHomer.pl -install rn6
 
-# Loading in mm10 promoter set
+### Loading in mm10 promoter set
   mouse promoter set ready in homer suite is mm9, need to load in mm10 version yourself
   how to do it manually:
 
-# use the mm10.tss file included above
-#create custom promoter set for mm10 (can't use mm9)
+### use the mm10.tss file included above
+  create custom promoter set for mm10 (can't use mm9)
 
     loadPromoters.pl -name mm10_promoters -org mouse -id refseq -genome mm10 -tss mm10.tss
 
@@ -112,19 +112,19 @@ Under the Select section click on the Metadata and List Accession to dowload the
 See screen shot image. <br/>
 Use the SRR_Acc_List.txt as the samples list for the SRRpull.sh script
 
-# make a directory for your experiment:
+### make a directory for your experiment:
 
-    mkdir HDAC12KO_ChIPseq
+    mkdir HDAC1_2_ChIPseq
     
- make a copy of the SRR_Acc_List.txt file in your new directory, using the text editor. Paste in the SRR list to the SRR_Acc_List.txt using nano.
+Make a copy of the SRR_Acc_List.txt file in your new directory, using the text editor. Paste in the SRR list to the SRR_Acc_List.txt using nano.
  
-    cd HDAC12KO_ChIPseq
+    cd HDAC1_2_ChIPseq
     nano SRR_Acc_List.txt
     
-# run the SRRpull.sh script
+### run the SRRpull.sh script
 The script is setup to be run from your experiment folder inside your home directory. <br/>
 It makes a file in the ciernialab shared data folder on Alder: /alder/data/cbh/ciernia-data/HDAC1_2_ChIPseq/SRA/<br/>
-It then uses a loop to pull each SRR file in RR_Acc_List.txt using prefetch <br/>
+It then uses a loop to pull each SRR file in SRR_Acc_List.txt using prefetch <br/>
 Because the files are PE we then need to add --split to the fastq-dump command to get the R1 and R2 fastq for each SRR entry<br/>
 copy or make using nano the SRRpull.sh script. It should be inside your experiment folder.<br/>
 Run the script as an sbatch submission to Alder:
@@ -141,9 +141,21 @@ If you check the contents of the experiment folder, SRAfetch.out should have als
     less SRAfetch.out
     
 ## 5. QC of the Fastq Files
+We need to check the quality of the fastq files both before and after trimming. We use FastQC from https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
+Look at their tutorials to interpret the output files
+
+The pretrim_fastqc.sh script makes an output file and a subfolder for pretrim .html files (one for each fastq file). We have to check both the foreward (R1) and reverse (R2) reads.
+
+The script loops through each fastq and generates a quality resport for each fastq in the /alder/data/cbh/ciernia-data/HDAC1_2_ChIPseq/SRA/ folder. 
+
+It then combines the reports into one easy to read output using multiqc: PretrimFastQC_multiqc_report.html
+PreTrimFastqc.out output log is also generated.
+
+    sbatch pretrim_fastqc.sh
+    
 
 
-
+    
 
 
 
