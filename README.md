@@ -346,9 +346,53 @@ Make tag directories for WT MG Input
 
 
 ### Step 2: 
-Quantify the reads at the initial putative peaks across each of the target and input tag directories using annotatePeaks.pl. 
+Find peaks for each pooled H3K27ac directory compared to pooled input directory.
+
+HDAC1/2 KO:
+
+    findPeaks TagDirectory/Pooltag_H3K27ac_HDAC12KO -style histone -size 250 -minDist 500 -i TagDirectory/Pooltag_input_HDAC1_2KO -o homer_regions/Homerpeaks_H3K27ac_HDAC1_2KO.txt
+
+HDAC1/2 WT:
+
+    findPeaks TagDirectory/Pooltag_H3K27ac_WT -style histone -size 250 -minDist 500 -i TagDirectory/Pooltag_input_WT -o homer_regions/Homerpeaks_H3K27ac_WT.txt
+
 
 ### Step 3: 
-Call getDiffExpression.pl and ultimately passes these values to the R/Bioconductor package DESeq2 to calculate enrichment values for each peak, returning only those peaks that pass a given fold enrichment (default: 2-fold) and FDR cutoff (default 5%).
+Combine WT and KO peaks into one file for annotation using mergPeaks:
 
- 
+    mergePeaks homer_regions/Homerpeaks_H3K27ac_HDAC1_2KO.txt homer_regions/Homerpeaks_H3K27ac_WT.txt > homer_regions/Homerpeaks_H3K27ac_all.txt
+
+Quantify the reads at the initial putative peaks across each of the target and input tag directories using annotatePeaks.pl. 
+http://homer.ucsd.edu/homer/ngs/diffExpression.html. This generate raw counts file from each tag directory for each sample for the merged peaks.<br/>
+
+IMPORTANT: Make sure you remember the order that your experiments and replicates where entered in for generating these commands.  Because experiment names can be cryptic, you will need to specify which experiments are which when running getDiffExpression.pl to assign replicates and conditions.<br/>
+  
+    annotatePeaks.pl homer_regions/Homerpeaks_H3K27ac_all.txt mm10 -raw -d TagDirectory/tag_SRR6326785 TagDirectory/tag_SRR6326800 TagDirectory/tag_SRR6326801  TagDirectory/tag_SRR6326796 TagDirectory/tag_SRR6326798 > countTable.H3K27ac_all.peaks.txt
+
+
+### Step 3: 
+Call getDiffExpression.pl and ultimately passes these values to the R/Bioconductor package DESeq2 to calculate enrichment values for each peak, returning only those peaks that pass a given fold enrichment (default: 2-fold) and FDR cutoff (default 5%).<br/>
+
+The getDiffExpression.pl program is executed with the following arguments:<br/>
+getDiffExpression.pl <raw count file> <group code1> <group code2> [group code3...] [options] > diffOutput.txt<br/>
+
+Provide sample group annotation for each experiment with an argument on the command line (in the same order found in the file, i.e. the same order given to the annotatePeaks.pl command when preparing the raw count file).<br/>
+
+  
+    getDiffExpression.pl countTable.H3K27ac_all.peaks.txt Hdac12KO Hdac12KO Hdac12KO WT WT > H3K27ac_diffpeaksOutput.txt
+
+##  Considerations:
+### Variance Stabilization/Normalized Read counts in output file: http://homer.ucsd.edu/homer/ngs/diffExpression.html
+By default, getDiffExpression.pl will perform a variance stabilization transform on your raw count data so that viewing the data is easier after the command is finished.  The idea behind variance stabilization is to "transform" the data such that variance in the read counts is relatively constant as a function of intensity.  This limits the "flare" of low expression variance that you normally see in log-transformed scatter plots when comparing one experiment versus another. By default the program will use DESeq2's rlog transform to create nicely normalized log2 read counts ("-rlog"). The program also supports DESeq2's VST transform (option "-vst"), which is faster and may be recommended if you are processing a lot of samples. In both cases the tranforms will be conducted with the design matrix specifying which samples are replicates (or paired in the batch definition). If you prefer read counts that are simply normalized to the total count in the raw count matrix, specify "-simpleNorm", or "-raw" to keep the data the same as the input data.<br/>
+
+IMPORTANT NOTE: The rlog and vst transforms may have problems if there are no replicates or too few samples (i.e. only 2), so in these cases it is recommended to use "-simpleNorm" or "-raw".<br/>
+
+### Normalization to Tag directory or gene totals
+Differential enrichment calculation normalizes to the total mapped reads in the tag directory instead of normalizing based on the matrix of gene expression values, specify "-norm2total". <br/>
+
+The "-norm2total" option is very useful for ChIP-Seq when you do not expect the signal from each experiment to be comparable, like when comparing target vs. IgG experiemnts.  However, if you were comparing a type of experiment where you do expect similar signal (for example, H3K27ac levels might be assumed to be similar across conditions), it is not recommended that you use the "-norm2total" option.<br/>
+
+    getDiffExpression.pl countTable.H3K27ac_all.peaks.txt Hdac12KO Hdac12KO Hdac12KO WT WT -simpleNorm > H3K27ac_diffpeaksOutput_SimpleNorm.txt
+
+
+
