@@ -214,7 +214,7 @@ Check the multiqc: sam_multiqc_report.html
 ## 12. Peak Calling with HOMER
 up until this point the pipeline is relatively standard for all PE ChIPseq experiments. The choice of peak callers and settings depends on what type of ChIP experiment you are performing (ie. histone marks vs. transcription factors). This dataset was for H3K27ac and H3K9ac, both classic histone acetylation marks that are analyzed nicely with HOMER using -style histone and some custom settings based on knowledge of how these two marks behave. If you are working with other ChIP datasets where the marks are either more or less peak like you need to make adjustments to the HOMER calls. See http://homer.ucsd.edu/homer/ngs/peaks.html for details.
 
-###Make Tag Directories
+### Make Tag Directories
 The first step to running HOMER is to make Tag Directories: http://homer.ucsd.edu/homer/ngs/tagDir.html
 We will make a folder Tag_Directories and then make tags for each sample WT and KO sample individually and all the input samples together. This is approach is specifically based for this experiment in which we have only 2-3 biological replicates per condition and input samples are not matched to individual samples. 
 
@@ -250,6 +250,11 @@ SRR6326793 <br/>
 SRR6326797 <br/>
 SRR6326799 <br/>
 
+To make a tag directory for each sample run:
+
+      sbatch HOMER_MakeTags.sh
+
+### Call Peaks and Find Differential Peaks Between Conditions
 There are several different approaches to analyze this data using HOMER. I have summarized the main points below but you should read the full HOMER ChIPseq documentation before running your own experiment. <br/>
 
 From the HOMER website:http://homer.ucsd.edu/homer/ngs/peaksReplicates.html<br/>
@@ -287,6 +292,12 @@ You can also set -style to "factor" for transcription factors with small binding
 
 
 ## Approach #2: Multi-Step with getDiffExpression.pl
+The first approach works well with lots of replicates and high quality data, etc. We only have 2-3 replicates and so the following approach basically does the same thing as approach #1 but in individual steps that allow us to fine tune each step for our data. <br/>
 
+### Step1: 
+Pool the target tag directories and input directories separately into pooled experiments and perform an initial peak identification using findPeaks. Pooling the experiments is generally more sensitive than trying to merge the individual peak files coming from each experiment (although this can be done using the "-use <peaks.txt...>" option if each directory already has a peak file associated with it).
+
+Next, it will quantify the reads at the initial putative peaks across each of the target and input tag directories using annotatePeaks.pl. 
+Finally, it calls getDiffExpression.pl and ultimately passes these values to the R/Bioconductor package DESeq2 to calculate enrichment values for each peak, returning only those peaks that pass a given fold enrichment (default: 2-fold) and FDR cutoff (default 5%).
 
  
