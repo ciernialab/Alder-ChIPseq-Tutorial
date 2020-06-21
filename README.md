@@ -300,10 +300,55 @@ You can also set -style to "factor" for transcription factors with small binding
 ## Approach #2: Multi-Step with getDiffExpression.pl
 The first approach works well with lots of replicates and high quality data, etc. We only have 2-3 replicates and so the following approach basically does the same thing as approach #1 but in individual steps that allow us to fine tune each step for our data. <br/>
 
-### Step1: 
+### Step 1: 
 Pool the target tag directories and input directories separately into pooled experiments and perform an initial peak identification using findPeaks. Pooling the experiments is generally more sensitive than trying to merge the individual peak files coming from each experiment (although this can be done using the "-use <peaks.txt...>" option if each directory already has a peak file associated with it).
 
-Next, it will quantify the reads at the initial putative peaks across each of the target and input tag directories using annotatePeaks.pl. 
-Finally, it calls getDiffExpression.pl and ultimately passes these values to the R/Bioconductor package DESeq2 to calculate enrichment values for each peak, returning only those peaks that pass a given fold enrichment (default: 2-fold) and FDR cutoff (default 5%).
+    module load samtools/1.4
+    module load jre/1.8.0_121
+    module load R/3.6.1
+
+    mkdir homer_regions/
+    
+For H3K27ac peaks make pooled tag directories for each condition:
+
+Make tag directories for HDAC1&2 KO MG H3K27ac
+
+    #HDAC1/2KO MG:
+    #SRR6326785
+    #SRR6326800
+    #SRR6326801
+
+    makeTagDirectory TagDirectory/Pooltag_H3K27ac_HDAC12KO aligned/SRR6326785_dedup.bam aligned/SRR6326800_dedup.bam aligned/SRR6326801_dedup.bam
+
+Make tag directories for HDAC1&2 KO MG Input
+
+    #SRR6326787	input
+    #SRR6326789	input
+  
+    makeTagDirectory TagDirectory/Pooltag_input_HDAC1_2KO aligned/SRR6326787_dedup.bam aligned/SRR6326789_dedup.bam
+
+Make tag directories for WT MG H3K27ac
+
+    #SRR6326796	H3K27ac
+    #SRR6326798	H3K27ac
+
+    makeTagDirectory TagDirectory/Pooltag_H3K27ac_WT aligned/SRR6326796_dedup.bam aligned/SRR6326798_dedup.bam
+
+Make tag directories for WT MG Input
+
+    #SRR6326791	input	wildtype
+    #SRR6326793	input	wildtype
+    #SRR6326795	input	wildtype
+    #SRR6326797	input	wildtype
+    #SRR6326799	input	wildtype
+
+    makeTagDirectory TagDirectory/Pooltag_input_WT aligned/SRR6326791_dedup.bam aligned/SRR6326793_dedup.bam aligned/SRR6326795_dedup.bam aligned/SRR6326797_dedup.bam aligned/SRR6326799_dedup.bam
+
+
+### Step 2: 
+Quantify the reads at the initial putative peaks across each of the target and input tag directories using annotatePeaks.pl. 
+
+### Step 3: 
+Call getDiffExpression.pl and ultimately passes these values to the R/Bioconductor package DESeq2 to calculate enrichment values for each peak, returning only those peaks that pass a given fold enrichment (default: 2-fold) and FDR cutoff (default 5%).
 
  
