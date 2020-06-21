@@ -218,39 +218,75 @@ up until this point the pipeline is relatively standard for all PE ChIPseq exper
 The first step to running HOMER is to make Tag Directories: http://homer.ucsd.edu/homer/ngs/tagDir.html
 We will make a folder Tag_Directories and then make tags for each sample WT and KO sample individually and all the input samples together. This is approach is specifically based for this experiment in which we have only 2-3 biological replicates per condition and input samples are not matched to individual samples. 
 
-For the H3K27ac mark we have the following: 
-HDAC1/2KO MG:
-SRR6326785
-SRR6326800
-SRR6326801
+For the H3K27ac mark we have the following:  <br/>
+HDAC1/2KO MG: <br/>
+SRR6326785 <br/>
+SRR6326800 <br/>
+SRR6326801 <br/>
 
-wT MG:
-SRR6326796
-SRR6326798
+wT MG: <br/>
+SRR6326796 <br/>
+SRR6326798 <br/>
 
-For the H3K9ac mark we have the following:
-HDAC1/2KO MG:
-SRR6326786
-SRR6326788 
+For the H3K9ac mark we have the following: <br/>
+HDAC1/2KO MG: <br/>
+SRR6326786 <br/>
+SRR6326788  <br/>
 
-WT MG:
-SRR6326790
-SRR6326792
-SRR6326794
+WT MG: <br/>
+SRR6326790 <br/>
+SRR6326792 <br/> 
+SRR6326794 <br/>
 
-#For input samples:
-KO input
-SRR6326787
-SRR6326789
+#For input samples: <br/>
+KO MG: <br/>
+SRR6326787 <br/>
+SRR6326789 <br/>
 
-WT input
-SRR6326791
-SRR6326793
-#RR6326795
-SRR6326797
-SRR6326799
+WT MG: <br/>
+SRR6326791 <br/>
+SRR6326793 <br/>
+#RR6326795 <br/>
+SRR6326797 <br/>
+SRR6326799 <br/>
+
+There are several different approaches to analyze this data using HOMER. I have summarized the main points below but you should read the full HOMER ChIPseq documentation before running your own experiment. <br/>
+
+From the HOMER website:http://homer.ucsd.edu/homer/ngs/peaksReplicates.html<br/>
+There are two general (but related) approaches to identifying differential peaks. The first is to use the getDifferentialPeaksReplicates.pl command, which attempts to automate the steps described below into a single command to generate a peak file. The second is to prepare your own regions and read counts and then use getDiffExpression.pl directly to calculate the differential enrichment. <br/>
+
+HOMER requires R/Bioconductor to be installed with packages for DESeq2 installed. <br/>
+Each user must to this install by running the following code from in their home directory (cd ~/):
+
+    module load R/3.6.1
+    R
+    
+This will start the R program environment. In R, install DESeq2 using bioconductor: https://bioconductor.org/packages/release/bioc/html/DESeq2.html
+
+    BiocManager::install("DESeq2")
+    
+This will install DESeq2 and all the dependencies. If asked to update any packages put "y". After the installation complete, exit. using "quite". You do not need to save the workspace ("n").  <br/>
+
+## Approach #1: getDifferentialPeaksReplicates.pl
+When identifying differential peaks between separate experiments, the program offers a way to include both the "background" ChIP-seq experiments as well as the input experiment by specifying them with either "-b" or "-i". The key difference between "-i" and "-b" directories is that the input directories ("-i") are used during the initial peak finding as controls to limit the feature detection and during the differential calculations with DESeq2, while the "-b" directories are used only during the differential calculations with DESeq2.  If both are specified (both -b and -i), the input directories are used during feature selection and the background directories are used during the differential calculation.  In general, if you have input experiments, you should use them with "-i". <br/>
+For example, for our experiment if you wanted to directly compare HDAC1/2KO and WT microglia for H3K27ac using all the input controls the command would look like this:
+
+    module load samtools/1.4
+    module load jre/1.8.0_121
+    module load R/3.6.1
+
+    getDifferentialPeaksReplicates.pl -t TagDirectory/tag_SRR6326785 TagDirectory/tag_SRR6326800 TagDirectory/tag_SRR6326801 -b     TagDirectory/tag_SRR6326796 TagDirectory/tag_SRR6326798 -i TagDirectory/tag_SRR6326787 TagDirectory/tag_SRR6326789 TagDirectory/tag_SRR6326791 TagDirectory/tag_SRR6326793 TagDirectory/tag_SRR6326795 TagDirectory/tag_SRR6326797 TagDirectory/tag_SRR6326799 -genome mm10 -style histone -size 250 -minDist 500 -balanced > Repl.outputPeaks.txt
 
 
+-style histone -size 250 -minDist 500: <br/>
+"-size" specifies the width of peaks that will form the basic building blocks for extending peaks into regions.  Smaller peak sizes offer better resolution, but  larger peak sizes are usually more sensitive.  By default, "-style histone" evokes a peak size of 500. "-minDist", is usually used to specify the minimum distance between adjacent peaks. <br/>
+
+You can also set -style to "factor" for transcription factors with small binding regions or "region" for broad histone marks. See http://homer.ucsd.edu/homer/ngs/peaks.html. Choosing the right style and settings often is trial and error and requires trying out several settings, looking at the data on the UCSC genome browser to see if the peaks match where you can see obvious peaks in the data and fine tuning the settings. <br/>
+
+-balanced : Do not force the use of normalization factors to match total mapped reads.  This can be useful when analyzing differential peaks between similar data (for example H3K27ac) where we expect similar levels in all experiments. Applying this allows the data to essentially be quantile normalized during the differential calculation.<br/>
+
+
+## Approach #2: Multi-Step with getDiffExpression.pl
 
 
  
