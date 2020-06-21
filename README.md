@@ -51,3 +51,26 @@ Should now return
   Usage:
   prefetch [options] <SRA accession> [...]
  ```
+ ## 3. Getting Setup on Alder: Getting Genome Indexes
+ This tutorial uses Bowtie2 to align the paired-end ChIPseq fastq files to the mouse genome Ensembl build for mm10
+ Bowtie2 requires BT2 index files that can be retrieved from Illumina igenomes: https://support.illumina.com/sequencing/sequencing_software/igenome.html
+ 
+ BT2 index files for mm10 are currently stored in /alder/data/cbh/ciernia-data/genomes/bowtie2indexes/
+ They are ready to use and you DO NOT NEED TO RUN THE FOLLOWING CODE for mouse
+ If you want to obtain index files for other species this is how the mouse indexes were setup:
+ 
+  ``` 
+    wget -c http://igenomes.illumina.com.s3-website-us-east-1.amazonaws.com/Mus_musculus/Ensembl/GRCm38/Mus_musculus_Ensembl_GRCm38.tar.gz
+ ```
+ The following was then added to the bash_profile document in the home directory to tell bowtie2 where to look for the index files:
+ 
+    export BT2_MM10=/alder/data/cbh/ciernia-data/genomes/bowtie2indexes/Mus_musculus/Ensembl/GRCm38/Sequence/Bowtie2Index
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
