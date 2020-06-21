@@ -195,6 +195,19 @@ Run the script to align. This takes significant time and memory. Output logs are
 
 Check the multiqc output to look at alignment rates: bowtie2_multiqc_report.html
 
+## 10. Filter aligned files
+We need to convert sam files to bam and filter to remove PCR duplicates, remove unmapped reads and secondary alignments (multi-mappers), and remove unpaired reads <br/>
+We use samtools to convert sam to bam and then samtools fixmate to remove unmapped reads and 2ndary alignments.<br/>
+We then remove PCR duplicates using -F 0x400 and -f 0x2 to keep only propperly paired reads<br/>
+We then indext the reads and collect additional QC metrics using picard tools and samtools flagstat <br/>
+QC meterics are then collected into one report using multiqc.
+
+Run the script:
+
+    sbatch SamtoolsFiltering.sh
+    
+Check the multiqc: sam_multiqc_report.html
+
 
 
 
