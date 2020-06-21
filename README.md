@@ -209,6 +209,48 @@ Run the script:
 Check the multiqc: sam_multiqc_report.html
 
 
+## 11. QC with Deeptools - add here
+
+## 12. Peak Calling with HOMER
+up until this point the pipeline is relatively standard for all PE ChIPseq experiments. The choice of peak callers and settings depends on what type of ChIP experiment you are performing (ie. histone marks vs. transcription factors). This dataset was for H3K27ac and H3K9ac, both classic histone acetylation marks that are analyzed nicely with HOMER using -style histone and some custom settings based on knowledge of how these two marks behave. If you are working with other ChIP datasets where the marks are either more or less peak like you need to make adjustments to the HOMER calls. See http://homer.ucsd.edu/homer/ngs/peaks.html for details.
+
+###Make Tag Directories
+The first step to running HOMER is to make Tag Directories: http://homer.ucsd.edu/homer/ngs/tagDir.html
+We will make a folder Tag_Directories and then make tags for each sample WT and KO sample individually and all the input samples together. This is approach is specifically based for this experiment in which we have only 2-3 biological replicates per condition and input samples are not matched to individual samples. 
+
+For the H3K27ac mark we have the following: 
+HDAC1/2KO MG:
+SRR6326785
+SRR6326800
+SRR6326801
+
+wT MG:
+SRR6326796
+SRR6326798
+
+For the H3K9ac mark we have the following:
+HDAC1/2KO MG:
+SRR6326786
+SRR6326788 
+
+WT MG:
+SRR6326790
+SRR6326792
+SRR6326794
+
+#For input samples:
+KO input
+SRR6326787
+SRR6326789
+
+WT input
+SRR6326791
+SRR6326793
+#RR6326795
+SRR6326797
+SRR6326799
+
+
 
 
  
