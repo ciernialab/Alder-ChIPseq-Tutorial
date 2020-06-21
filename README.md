@@ -395,4 +395,7 @@ The "-norm2total" option is very useful for ChIP-Seq when you do not expect the 
     getDiffExpression.pl countTable.H3K27ac_all.peaks.txt Hdac12KO Hdac12KO Hdac12KO WT WT -simpleNorm > H3K27ac_diffpeaksOutput_SimpleNorm.txt
 
 
+### Repeat for H3K9ac all in one script:
+
+    sbatch H3K9ac_HOMER2.sh 
 
