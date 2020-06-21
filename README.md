@@ -108,11 +108,33 @@ Navigate to the bottom of the page and click “send to” and select “Run Sel
 https://www.ncbi.nlm.nih.gov/Traces/study/?acc=PRJNA420076&o=acc_s%3Aa
 
 Under the Select section click on the Metadata and List Accession to dowload the information on the experiment and the list of SRR files.
+See screen shot image. 
+Use the SRR_Acc_List.txt as the samples list for the SRRpull.sh script
 
-![Alt text](/images/SRAscreenshot.png?raw=true "SRA List Accession")
+#make a directory for your experiment:
 
-https://github.com/[ciernialab]/[Alder-ChIPseq-Tutorial]/blob/images/SRAscreenshot.png?raw=true
+    mkdir HDAC12KO_ChIPseq
+    
+ make a copy of the SRR_Acc_List.txt file in your new directory, using the text editor. Paste in the SRR list to the SRR_Acc_List.txt using nano.
  
- 
- 
+    cd HDAC12KO_ChIPseq
+    nano SRR_Acc_List.txt
+    
+#run the SRRpull.sh script
+The script is setup to be run from your experiment folder inside your home directory. 
+It makes a file in the ciernialab shared data folder on Alder: /alder/data/cbh/ciernia-data/HDAC1_2_ChIPseq/SRA/
+It then uses a loop to pull each SRR file in RR_Acc_List.txt using prefetch 
+Because the files are PE we then need to add --split to the fastq-dump command to get the R1 and R2 fastq for each SRR entry
+copy or make using nano the SRRpull.sh script. It should be inside your experiment folder.
+Run the script as an sbatch submission to Alder:
+
+    sbatch SRRpull.sh
+    
+
+
+
+
+
+
+
  
