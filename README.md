@@ -215,7 +215,29 @@ Run the script:
 Check the multiqc: sam_multiqc_report.html
 
 
-## 11. QC with Deeptools - add here
+## 11. QC with Deeptools: https://deeptools.readthedocs.io/en/develop/content/example_usage.html#how-we-use-deeptools-for-chip-seq-analyses
+
+### 1. Correlation between BAM files using multiBamSummary and plotCorrelation
+Together, these two modules perform a very basic test to see whether the sequenced and aligned reads meet your expectations. We use this check to assess reproducibility - either between replicates and/or between different experiments that might have used the same antibody or the same cell type, etc. For instance, replicates should correlate better than differently treated samples.
+
+### 2. Coverage check (plotCoverage). 
+To see how many bp in the genome are actually covered by (a good number) of sequencing reads, we use plotCoverage which generates two diagnostic plots that help us decide whether we need to sequence deeper or not. The option --ignoreDuplicates is particularly useful here!
+
+### 3. Check Fragment Sizes (bamPEFragmentSize)
+For paired-end samples, we often additionally check whether the fragment sizes are more or less what we would expected based on the library preparation. 
+
+### 4. GC-bias check (computeGCBias). 
+Many sequencing protocols require several rounds of PCR-based DNA amplification, which often introduces notable bias, due to many DNA polymerases preferentially amplifying GC-rich templates. Depending on the sample (preparation), the GC-bias can vary significantly and we routinely check its extent. When we need to compare files with different GC biases, we use the correctGCBias module. See the paper by Benjamini and Speed for many insights into this problem.
+
+### 5. Assessing the ChIP strength. 
+We do this quality control step to get a feeling for the signal-to-noise ratio in samples from ChIP-seq experiments. It is based on the insights published by Diaz et al.
+
+### 5. Convert to Read Depth Normalized BigWigs 
+The deepTools modules bamCompare and bamCoverage not only allow for simple conversion of BAM to bigWig (or bedGraph for that matter), but also for normalization, such that different samples can be compared despite differences in their sequencing depth.
+
+### 6. TSS Heatmap Plots
+Plot Normalized signal over the TSS with computeMatrix, plotHeatmap and plotProfile.
+
 
 ## 12. Peak Calling with HOMER
 up until this point the pipeline is relatively standard for all PE ChIPseq experiments. The choice of peak callers and settings depends on what type of ChIP experiment you are performing (ie. histone marks vs. transcription factors). This dataset was for H3K27ac and H3K9ac, both classic histone acetylation marks that are analyzed nicely with HOMER using -style histone and some custom settings based on knowledge of how these two marks behave. If you are working with other ChIP datasets where the marks are either more or less peak like you need to make adjustments to the HOMER calls. See http://homer.ucsd.edu/homer/ngs/peaks.html for details.
