@@ -98,8 +98,20 @@ Mouse, Human and rat have been added:
 
     loadPromoters.pl -name mm10_promoters -org mouse -id refseq -genome mm10 -tss mm10.tss
 
+## 5. Fetching Data from GEO
+This tutorial analyzes a ChIPseq dataset from this paper: https://pubmed.ncbi.nlm.nih.gov/29548672/
+The data is stored in NCBI GEO as SRR files which are highly compressed files that can be converted to fastq files using SRA Toolkit (configured above). 
+ The GEO entry can be found here: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE107436
  
- 
+To find a comprehensive list of the SRR files, we use the Run Selector. 
+Navigate to the bottom of the page and click “send to” and select “Run Selector”, and then press “go”.
+https://www.ncbi.nlm.nih.gov/Traces/study/?acc=PRJNA420076&o=acc_s%3Aa
+
+Under the Select section click on the Metadata and List Accession to dowload the information on the experiment and the list of SRR files.
+
+
+
+
  
  
  
