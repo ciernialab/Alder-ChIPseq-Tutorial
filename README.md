@@ -3,7 +3,7 @@ Tutorial for processing ChIP-seq PE files
 
 This tutorial is for downloading published PE ChIPSeq files from GEO and processing them for QC, aligning, peak calling and differential analysis. The tutorial is setup to run on the DMCBH Alder computing cluster using bash scripts. 
 
-##1. Getting Setup on Alder: Making a bash_profile
+## 1. Getting Setup on Alder: Making a bash_profile
   - Go to your home directory: cd ~/
   - Open a text editor and make/edit your .bash_profile
     ```
@@ -20,4 +20,28 @@ This tutorial is for downloading published PE ChIPSeq files from GEO and process
    ``` 
     echo $PATH
   ``` 
-  ##2. Getting Setup on Alder: Configuring SRA Toolkit
+ ## 2. Getting Setup on Alder: Configuring SRA Toolkit
+  When run for first time:
+   ``` 
+    prefetch
+  ``` 
+  You may get the following message:
+    ``` 
+    This sra toolkit installation has not been configured.
+    Before continuing, please run: vdb-config --interactive
+    For more information, see https://www.ncbi.nlm.nih.gov/sra/docs/sra-cloud/
+  ``` 
+  Run:
+  ``` 
+    vdb-config —interactive
+  ``` 
+  This should open a dialogue box. Don’t change anything and hit "X" to exit
+  
+  ``` 
+    prefetch
+  ``` 
+  Should now return
+ ``` 
+  Usage:
+  prefetch [options] <SRA accession> [...]
+  ```
