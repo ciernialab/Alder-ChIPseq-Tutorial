@@ -1,7 +1,7 @@
 # Alder-ChIPseq-Tutorial
 Tutorial for processing ChIP-seq PE files
 
-This tutorial is for downloading published PE ChIPSeq files from GEO and processing them for QC, aligning, peak calling and differential analysis. The tutorial is setup to run on the DMCBH Alder computing cluster using bash scripts. 
+This tutorial is for downloading published PE ChIPSeq files from GEO and processing them for QC, aligning, peak calling and differential analysis.  The tutorial is setup to run on the DMCBH Alder computing cluster using bash scripts. 
 
 ## 1. Getting Setup on Alder: Making a bash_profile
   - Go to your home directory: cd ~/
@@ -10,9 +10,9 @@ This tutorial is for downloading published PE ChIPSeq files from GEO and process
      cd ~/
      nano .bash_profile
     ``` 
-  -either replace or add lines as shown in the bash_profile.txt document
-  -you must source your changes before they will take effect in the current terminal session
-  -your bash profile will then load each time you start a new session
+  -either replace or add lines as shown in the bash_profile.txt document  <br/>
+  -you must source your changes before they will take effect in the current terminal session  <br/>
+  -your bash profile will then load each time you start a new session<br/>
   ``` 
     source ~/.bash_profile
   ``` 
@@ -52,11 +52,10 @@ Should now return
   prefetch [options] <SRA accession> [...]
  ```
  ## 3. Getting Setup on Alder: Getting Genome Indexes
- This tutorial uses Bowtie2 to align the paired-end ChIPseq fastq files to the mouse genome Ensembl build for mm10
- Bowtie2 requires BT2 index files that can be retrieved from Illumina igenomes: https://support.illumina.com/sequencing/sequencing_software/igenome.html
+ This tutorial uses Bowtie2 to align the paired-end ChIPseq fastq files to the mouse genome Ensembl build for mm10 <br/> Bowtie2 requires BT2 index files that can be retrieved from Illumina igenomes: https://support.illumina.com/sequencing/sequencing_software/igenome.html
  
- BT2 index files for mm10 are currently stored in /alder/data/cbh/ciernia-data/genomes/bowtie2indexes/
- They are ready to use and you DO NOT NEED TO RUN THE FOLLOWING CODE for mouse
+ BT2 index files for mm10 are currently stored in /alder/data/cbh/ciernia-data/genomes/bowtie2indexes/<br/>
+ They are ready to use and you DO NOT NEED TO RUN THE FOLLOWING CODE for mouse<br/>
  If you want to obtain index files for other species this is how the mouse indexes were setup:
  
   ``` 
@@ -67,7 +66,9 @@ Should now return
     export BT2_MM10=/alder/data/cbh/ciernia-data/genomes/bowtie2indexes/Mus_musculus/Ensembl/GRCm38/Sequence/Bowtie2Index
 
 ## 4. Getting Setup on Alder: Installing HOMER
-This has already been done for you. But in case it does not work this is how the install was done. From within /alder/data/cbh/ciernia-data/pipeline-tools/    Run the following:
+This has already been done for you. But in case it does not work this is how the install was done. <br/>
+From within /alder/data/cbh/ciernia-data/pipeline-tools/    <br/>
+Run the following:
 
     wget -c http://homer.ucsd.edu/homer/configureHomer.pl
 
@@ -99,16 +100,16 @@ Mouse, Human and rat have been added:
     loadPromoters.pl -name mm10_promoters -org mouse -id refseq -genome mm10 -tss mm10.tss
 
 ## 5. Fetching Data from GEO
-This tutorial analyzes a ChIPseq dataset from this paper: https://pubmed.ncbi.nlm.nih.gov/29548672/
-The data is stored in NCBI GEO as SRR files which are highly compressed files that can be converted to fastq files using SRA Toolkit (configured above). 
- The GEO entry can be found here: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE107436
+This tutorial analyzes a ChIPseq dataset from this paper: https://pubmed.ncbi.nlm.nih.gov/29548672/<br/>
+The data is stored in NCBI GEO as SRR files which are highly compressed files that can be converted to fastq files using SRA Toolkit (configured above). <br/>
+ The GEO entry can be found here: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE107436<br/>
  
-To find a comprehensive list of the SRR files, we use the Run Selector. 
-Navigate to the bottom of the page and click “send to” and select “Run Selector”, and then press “go”.
-https://www.ncbi.nlm.nih.gov/Traces/study/?acc=PRJNA420076&o=acc_s%3Aa
+To find a comprehensive list of the SRR files, we use the Run Selector. <br/>
+Navigate to the bottom of the page and click “send to” and select “Run Selector”, and then press “go”.<br/>
+https://www.ncbi.nlm.nih.gov/Traces/study/?acc=PRJNA420076&o=acc_s%3Aa<br/>
 
-Under the Select section click on the Metadata and List Accession to dowload the information on the experiment and the list of SRR files.
-See screen shot image. 
+Under the Select section click on the Metadata and List Accession to dowload the information on the experiment and the list of SRR files.<br/>
+See screen shot image. <br/>
 Use the SRR_Acc_List.txt as the samples list for the SRRpull.sh script
 
 #make a directory for your experiment:
@@ -121,11 +122,11 @@ Use the SRR_Acc_List.txt as the samples list for the SRRpull.sh script
     nano SRR_Acc_List.txt
     
 #run the SRRpull.sh script
-The script is setup to be run from your experiment folder inside your home directory. 
-It makes a file in the ciernialab shared data folder on Alder: /alder/data/cbh/ciernia-data/HDAC1_2_ChIPseq/SRA/
-It then uses a loop to pull each SRR file in RR_Acc_List.txt using prefetch 
-Because the files are PE we then need to add --split to the fastq-dump command to get the R1 and R2 fastq for each SRR entry
-copy or make using nano the SRRpull.sh script. It should be inside your experiment folder.
+The script is setup to be run from your experiment folder inside your home directory. <br/>
+It makes a file in the ciernialab shared data folder on Alder: /alder/data/cbh/ciernia-data/HDAC1_2_ChIPseq/SRA/<br/>
+It then uses a loop to pull each SRR file in RR_Acc_List.txt using prefetch <br/>
+Because the files are PE we then need to add --split to the fastq-dump command to get the R1 and R2 fastq for each SRR entry<br/>
+copy or make using nano the SRRpull.sh script. It should be inside your experiment folder.<br/>
 Run the script as an sbatch submission to Alder:
 
     sbatch SRRpull.sh
