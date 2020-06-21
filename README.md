@@ -66,8 +66,18 @@ Should now return
  
     export BT2_MM10=/alder/data/cbh/ciernia-data/genomes/bowtie2indexes/Mus_musculus/Ensembl/GRCm38/Sequence/Bowtie2Index
 
- 
- 
+## 4. Getting Setup on Alder: Installing HOMER
+This has already been done for you. But in case it does not work this is how the install was done. From within /alder/data/cbh/ciernia-data/pipeline-tools/    Run the following:
+
+  wget -c http://homer.ucsd.edu/homer/configureHomer.pl
+
+  perl configureHomer.pl -install
+
+Then add this to your bash_profile:
+  PATH=$PATH:/alder/data/cbh/ciernia-data/pipeline-tools/.//bin/
+
+
+
  
  
  
