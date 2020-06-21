@@ -153,8 +153,35 @@ PreTrimFastqc.out output log is also generated.
 
     sbatch pretrim_fastqc.sh
     
+Check the PretrimFastQC_multiqc_report.html to help inform your trimming
 
+## 6. Trimming fastq files
+We need to remove adapters and poor quality reads before aligning.<br/>
+Trimmomatic will look for seed matches of 16 bases with 2 mismatches allowed and will then extend and clip if a score of 30 for PE or 10 for SE is reached (~17 base match)<br/>
+The minimum adapter length is 8 bases<br/>
+T = keeps both reads even if only one passes criteria<br/>
+Trims low quality bases at leading and trailing end if quality score < 15<br/>
+Sliding window: scans in a 4 base window, cuts when the average quality drops below 15<br/>
+Log outputs number of input reads, trimmed, and surviving reads in trim_log_samplename<br/>
 
+It uses the file TruSeq3-PE.fa (comes with Trimmomatic download). <br/>
+The program needs to know where this is stored. We set the path to thies file in the bash_profile with $ADAPTERS <br/>
+To check the contents of the file:
+
+    less $ADAPTERS/TruSeq3-PE.fa
+
+Run the script
+
+    sbatch Trim.sh
+    
+## 7. Repeat QC on post trim files
+Repeat the QC on the post trim files and compare the output to the pretrim.
+
+    sbatch posttrim_fastqc.sh
+
+## 7. QC of the Fastq Files: Contamination Screening - Add Fastqscreen info here
+
+## 8. Align to mm10 genome using Bowtie2
     
 
 
