@@ -90,11 +90,11 @@ Mouse, Human and rat have been added:
     perl configureHomer.pl -install hg18
     perl configureHomer.pl -install rn6
 
-##Loading in mm10 promoter set
+# Loading in mm10 promoter set
   mouse promoter set ready in homer suite is mm9, need to load in mm10 version yourself
   how to do it manually:
 
-#use the mm10.tss file included above
+# use the mm10.tss file included above
 #create custom promoter set for mm10 (can't use mm9)
 
     loadPromoters.pl -name mm10_promoters -org mouse -id refseq -genome mm10 -tss mm10.tss
@@ -112,7 +112,7 @@ Under the Select section click on the Metadata and List Accession to dowload the
 See screen shot image. <br/>
 Use the SRR_Acc_List.txt as the samples list for the SRRpull.sh script
 
-#make a directory for your experiment:
+# make a directory for your experiment:
 
     mkdir HDAC12KO_ChIPseq
     
@@ -121,7 +121,7 @@ Use the SRR_Acc_List.txt as the samples list for the SRRpull.sh script
     cd HDAC12KO_ChIPseq
     nano SRR_Acc_List.txt
     
-#run the SRRpull.sh script
+# run the SRRpull.sh script
 The script is setup to be run from your experiment folder inside your home directory. <br/>
 It makes a file in the ciernialab shared data folder on Alder: /alder/data/cbh/ciernia-data/HDAC1_2_ChIPseq/SRA/<br/>
 It then uses a loop to pull each SRR file in RR_Acc_List.txt using prefetch <br/>
@@ -131,6 +131,17 @@ Run the script as an sbatch submission to Alder:
 
     sbatch SRRpull.sh
     
+Check that the script is running by checkin squeue
+  
+    squeue
+
+It should say that the job SRAfetch is running
+If you check the contents of the experiment folder, SRAfetch.out should have also been generated. Look inside this file (even while it is still running) to check the progress of the script. The sript prints when a samples starts, progress, and ends. SRAfetch.out also serves as a log to check for errors, etc. This is one of the main advantages of sbatch - the log!
+
+    less SRAfetch.out
+    
+## 5. QC of the Fastq Files
+
 
 
 
