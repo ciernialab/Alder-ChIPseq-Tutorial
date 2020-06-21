@@ -111,7 +111,7 @@ Under the Select section click on the Metadata and List Accession to dowload the
 
 ![Alt text](/images/SRAscreenshot.png?raw=true "SRA List Accession")
 
-
+https://github.com/[ciernialab]/[Alder-ChIPseq-Tutorial]/blob/images/SRAscreenshot.png?raw=true
  
  
  
