@@ -286,7 +286,13 @@ Use BamCoverage to convert BAM to bigWig (or bedGraph for that matter), with nor
 
 
 ### 6. TSS Heatmap Plots
-Plot Normalized signal over the TSS with computeMatrix, plotHeatmap and plotProfile.
+Plot Normalized signal over the TSS with computeMatrix, plotHeatmap and plotProfile. You first need the coordinates of all the mm10 genes in bed format. To get these go to the UCSC genome browser and select mm10. Go to the table browser and download a bed file for the gene body. Load the bed file into your experiment folder on Alder.<br/>
+
+Compute a coverage matrix for each bed file genes from your normalized bigwig files and then plot.https://deeptools.readthedocs.io/en/develop/content/tools/computeMatrix.html
+
+
+    sbatch Geneplots_deeptools.sh
+
 
 
 ## 12. Peak Calling with HOMER
