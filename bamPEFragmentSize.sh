@@ -13,9 +13,10 @@
 #######################################################################################
 
 #H3K27ac
-bamPEFragmentSize --bamfiles aligned/SRR6326785_dedup.bam aligned/SRR6326800_dedup.bam aligned/SRR6326801_dedup.bam aligned/SRR6326796_dedup.bam aligned/SRR6326798_dedup.bam aligned/SRR6326787_dedup.bam aligned/SRR6326789_dedup.bam aligned/SRR6326791_dedup.bam aligned/SRR6326793_dedup.bam aligned/SRR6326795_dedup.bam aligned/SRR6326797_dedup.bam aligned/SRR6326799_dedup.bam --samplesLabel KO KO KO WT WT KOInput KOInput WTInput WTInput WTInput WTInput WTInput --histogram Deeptools/H3K27ac_PEfragsize.pdf --blackListFileName $BL/mm10.blacklist.bed -p 20 --plotFileFormat pdf
+bamPEFragmentSize --bamfiles aligned/SRR6326785_dedup.bam aligned/SRR6326800_dedup.bam aligned/SRR6326801_dedup.bam aligned/SRR6326796_dedup.bam aligned/SRR6326798_dedup.bam --samplesLabel KO KO KO WT WT --histogram Deeptools/H3K27ac_PEfragsize.pdf --blackListFileName $BL/mm10.blacklist.bed -p 20 --plotFileFormat pdf
 
 #H3K9ac
-bamPEFragmentSize --bamfiles aligned/SRR6326786_dedup.bam aligned/SRR6326788_dedup.bam aligned/SRR6326790_dedup.bam aligned/SRR6326792_dedup.bam aligned/SRR6326794_dedup.bam aligned/SRR6326787_dedup.bam aligned/SRR6326789_dedup.bam aligned/SRR6326791_dedup.bam aligned/SRR6326793_dedup.bam aligned/SRR6326795_dedup.bam aligned/SRR6326797_dedup.bam aligned/SRR6326799_dedup.bam --samplesLabel KO KO WT WT WT KOInput KOInput WTInput WTInput WTInput WTInput WTInput --histogram Deeptools/H3K9ac_PEfragsize.pdf --blackListFileName $BL/mm10.blacklist.bed -p 20 --plotFileFormat pdf
+bamPEFragmentSize --bamfiles aligned/SRR6326786_dedup.bam aligned/SRR6326788_dedup.bam aligned/SRR6326790_dedup.bam aligned/SRR6326792_dedup.bam aligned/SRR6326794_dedup.bam --samplesLabel KO KO WT WT WT --histogram Deeptools/H3K9ac_PEfragsize.pdf --blackListFileName $BL/mm10.blacklist.bed -p 20 --plotFileFormat pdf
 
- 
+#Input
+bamPEFragmentSize --bamfiles aligned/SRR6326787_dedup.bam aligned/SRR6326789_dedup.bam aligned/SRR6326791_dedup.bam aligned/SRR6326793_dedup.bam aligned/SRR6326795_dedup.bam aligned/SRR6326797_dedup.bam aligned/SRR6326799_dedup.bam --samplesLabel KOInput KOInput WTInput WTInput WTInput WTInput WTInput --histogram Deeptools/InputSamples_PEfragsize.pdf --blackListFileName $BL/mm10.blacklist.bed -p 20 --plotFileFormat pdf
