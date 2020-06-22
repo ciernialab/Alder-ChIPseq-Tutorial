@@ -17,10 +17,10 @@ module load R/3.6.1
 #KO:
 #SRR6326786	H3K9ac	HDAC1&2 microglial deletion
 #SRR6326788	H3K9ac	HDAC1&2 microglial deletion
-makeTagDirectory TagDirectory/tag_H3K9ac_HDAC1_2KO aligned/SRR6326786_dedup.bam aligned/SRR6326788_dedup.bam
+makeTagDirectory TagDirectory/Pooltag_H3K9ac_HDAC1_2KO aligned/SRR6326786_dedup.bam aligned/SRR6326788_dedup.bam
 
 #find peaks with Wendlen paper parameters:
-findPeaks TagDirectory/tag_H3K9ac_HDAC1_2KO -style histone -size 250 -minDist 500 -i TagDirectory/tag_input_HDAC1_2KO -o homer_regions/Homerpeaks_H3K9ac_HDAC1_2KO.txt
+findPeaks TagDirectory/Pooltag_H3K9ac_HDAC1_2KO -style histone -size 250 -minDist 500 -i TagDirectory/Pooltag_input_HDAC1_2KO -o homer_regions/Homerpeaks_H3K9ac_HDAC1_2KO.txt
 
 #######################################################################################
 
@@ -29,10 +29,10 @@ findPeaks TagDirectory/tag_H3K9ac_HDAC1_2KO -style histone -size 250 -minDist 50
 #SRR6326792	H3K9ac	wildtype
 #SRR6326794	H3K9ac	wildtype
 
-makeTagDirectory TagDirectory/tag_H3K9ac_WT aligned/SRR6326790_dedup.bam aligned/SRR6326792_dedup.bam aligned/SRR6326794_dedup.bam
+makeTagDirectory TagDirectory/Pooltag_H3K9ac_WT aligned/SRR6326790_dedup.bam aligned/SRR6326792_dedup.bam aligned/SRR6326794_dedup.bam
 
 #find peaks with Wendlen paper parameters:
-findPeaks TagDirectory/tag_H3K9ac_WT -style histone -size 250 -minDist 500 -i TagDirectory/tag_input_WT -o homer_regions/Homerpeaks_H3K9ac_WT.txt
+findPeaks TagDirectory/Pooltag_H3K9ac_WT -style histone -size 250 -minDist 500 -i TagDirectory/Pooltag_input_WT -o homer_regions/Homerpeaks_H3K9ac_WT.txt
 
 
 ##########################################################################################
