@@ -36,7 +36,7 @@ This tutorial is for downloading published PE ChIPSeq files from GEO and process
   Run:
  
  ``` 
-    vdb-config —interactive
+    vdb-config —-interactive
  ``` 
   
   This should open a dialogue box. Don’t change anything and hit "X" to exit
