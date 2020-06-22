@@ -33,3 +33,6 @@ echo ${sample} "finished trim"
 
 done
 
+#multiqc
+multiqc output/trimlogs/ --filename output/trimlogs_multiqc_report.html --ignore-samples Undetermined* --interactive
+
