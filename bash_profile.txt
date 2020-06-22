@@ -35,4 +35,17 @@ export TRIMMOMATIC=/alder/data/cbh/ciernia-data/pipeline-tools/Trimmomatic-0.39
 
 #adapters for trimmomatic
 export ADAPTERS=/alder/data/cbh/ciernia-data/pipeline-tools/Trimmomatic-0.39/adapters
+
+#picard tools
+export PICARD=/alder/data/cbh/ciernia-data/pipeline-tools/picard.jar
+
+#HOMER
+PATH=$PATH:/alder/data/cbh/ciernia-data/pipeline-tools/.//bin/
+
+#blacklist bed files
+export BL=/alder/data/cbh/ciernia-data/blacklist
+#run with $BL/mm10.blacklist.bed
+
+
+export PATH
  
