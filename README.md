@@ -245,25 +245,39 @@ This takes a lot of memory so it is better if you run the above two commands usi
      
      plotPCA -in Deeptools/H3K27ac_BamSum10kbbins.npz -o Deeptools/PCA_H3K27ac.pdf -T "PCA of Sequencing Depth Normalized Read Counts" --plotHeight 7 --plotWidth 9
 
+
     plotCorrelation -in Deeptools/H3K27ac_BamSum10kbbins.npz --corMethod spearman --skipZeros --plotTitle "Spearman Correlation of Sequencing Depth Normalized Read Counts" --whatToPlot heatmap --colorMap RdYlBu --plotNumbers -o Deeptools/SpearmanCorr_H3K27ac.pdf
     
- For H3K27ac:
+ For H3K9ac:
      
      plotPCA -in Deeptools/H3K9ac_BamSum10kbbins.npz -o Deeptools/PCA_H3K9ac.pdf -T "PCA of Sequencing Depth Normalized Read Counts" --plotHeight 7 --plotWidth 9
+
 
     plotCorrelation -in Deeptools/H3K9ac_BamSum10kbbins.npz --corMethod spearman --skipZeros --plotTitle "Spearman Correlation of Sequencing Depth Normalized Read Counts" --whatToPlot heatmap --colorMap RdYlBu --plotNumbers -o Deeptools/SpearmanCorr_H3K9ac.pdf
 
 ### 2. Coverage check (plotCoverage). 
-To see how many bp in the genome are actually covered by (a good number) of sequencing reads, we use plotCoverage which generates two diagnostic plots that help us decide whether we need to sequence deeper or not. The option --ignoreDuplicates is particularly useful here!
+To see how many bp in the genome are actually covered by (a good number) of sequencing reads, we use plotCoverage which generates two diagnostic plots that help us decide whether we need to sequence deeper or not. It samples 1 million bp, counts the number of overlapping reads and can report a histogram that tells you how many bases are covered how many times. Multiple BAM files are accepted, but they all should correspond to the same genome assembly.
+
+    sbatch PlotCoverage.sh
 
 ### 3. Check Fragment Sizes (bamPEFragmentSize)
 For paired-end samples, we often additionally check whether the fragment sizes are more or less what we would expected based on the library preparation. 
 
-### 4. GC-bias check (computeGCBias). 
+    sbatch bamPEFragmentSize.sh
+
+### 4. GC-bias check (computeGCBias) - ADD later if needed
 Many sequencing protocols require several rounds of PCR-based DNA amplification, which often introduces notable bias, due to many DNA polymerases preferentially amplifying GC-rich templates. Depending on the sample (preparation), the GC-bias can vary significantly and we routinely check its extent. When we need to compare files with different GC biases, we use the correctGCBias module. See the paper by Benjamini and Speed for many insights into this problem.
 
 ### 5. Assessing the ChIP strength. 
-We do this quality control step to get a feeling for the signal-to-noise ratio in samples from ChIP-seq experiments. It is based on the insights published by Diaz et al.
+https://deeptools.readthedocs.io/en/develop/content/tools/plotFingerprint.html <br/>
+We do this quality control step to get a feeling for the signal-to-noise ratio in samples from ChIP-seq experiments. It is based on the insights published by Diaz et al. This tool samples indexed BAM files and plots a profile of cumulative read coverages for each. All reads overlapping a window (bin) of the specified length are counted; these counts are sorted and the cumulative sum is finally plotted.<br/>
+
+This tool is based on a method developed by Diaz et al.. It determines how well the signal in the ChIP-seq sample can be differentiated from the background distribution of reads in the control sample. For factors that will enrich well-defined, rather narrow regions (e.g. transcription factors such as p300), the resulting plot can be used to assess the strength of a ChIP, but the broader the enrichments are to be expected, the less clear the plot will be. Vice versa, if you do not know what kind of signal to expect, the fingerprint plot will give you a straight-forward indication of how careful you will have to be during your downstream analyses to separate biological noise from meaningful signal.<br/>
+
+An ideal [input][] with perfect uniform distribution of reads along the genome (i.e. without enrichments in open chromatin etc.) and infinite sequencing coverage should generate a straight diagonal line. A very specific and strong ChIP enrichment will be indicated by a prominent and steep rise of the cumulative sum towards the highest rank. This means that a big chunk of reads from the ChIP sample is located in few bins which corresponds to high, narrow enrichments typically seen for transcription factors.https://deeptools.readthedocs.io/en/latest/content/feature/plotFingerprint_QC_metrics.html <br/>
+
+    sbatch FingerPrint.sh
+
 
 ### 5. Convert to Read Depth Normalized BigWigs 
 Use BamCoverage to convert BAM to bigWig (or bedGraph for that matter), with normalization, such that different samples can be compared despite differences in their sequencing depth. The effective genome size is set for mappable part of mm10. It makes a normalized bigwig file for each SRR. Blacklist regions are excluded and reads are extended and centered. Averages in 10bp bins across the genome.
