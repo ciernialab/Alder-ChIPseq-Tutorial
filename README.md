@@ -412,8 +412,6 @@ Pool the target tag directories and input directories separately into pooled exp
     module load samtools/1.4
     module load jre/1.8.0_121
     module load R/3.6.1
-
-    mkdir homer_regions/
     
 For H3K27ac peaks make pooled tag directories for each condition:
 
