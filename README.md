@@ -490,11 +490,21 @@ HDAC1/2 WT: 2 replicates
 
 Run peak finding as a script for both H3K27ac (lines above) and H3K9ac:
 
-	
+	FindPeaks_HOMER.sh
 
 ### Step 3: 
 
 Convert the peak files into bed files to load onto the UCSC genome browser. 
+
+Put the pos2bedmod.pl file in your experiment directory. Change the permssions by running this:
+
+	chmod +x pos2bedmod.pl
+
+Then run the following script to format all your peakfiles:
+
+	Convert_to_bed.sh
+
+What the script does:
 
 Remove the extra # lines in the Homer output 
     
@@ -512,15 +522,6 @@ Since we aligned to the ensembl genes we have to add "chr" to the chormosome nam
     
   
     rm homer_regions/tmp*
-
-Run the steps for all 4 peak files with this script:
-     
-    grep -v '^#' homer_regions/Homerpeaks_H3K27ac_WT.txt > homer_regions/tmp.txt
-    perl pos2bedmod.pl homer_regions/tmp.txt > homer_regions/tmp.bed
-    sed 's/^/chr/' homer_regions/tmp.bed > homer_regions/Homerpeaks_H3K27ac_WT.bed
-    rm homer_regions/tmp*
-    
-
  
  ### Step 4:
    Combine WT and KO peaks into one file for annotation using mergPeaks:
