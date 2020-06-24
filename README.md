@@ -467,8 +467,41 @@ IMPORTANT: Make sure you remember the order that your experiments and replicates
   
     annotatePeaks.pl homer_regions/Homerpeaks_H3K27ac_all.txt mm10 -raw -d TagDirectory/tag_SRR6326785 TagDirectory/tag_SRR6326800 TagDirectory/tag_SRR6326801  TagDirectory/tag_SRR6326796 TagDirectory/tag_SRR6326798 > countTable.H3K27ac_all.peaks.txt
 
+### Step 4:
+Convert the peak files into bed files to load onto the UCSC genome browser.
 
-### Step 3: 
+Remove the extra # lines in the Homer output 
+    
+    grep -v '^#' homer_regions/Homerpeaks_H3K27ac_HDAC1_2KO.txt > homer_regions/tmp.txt
+
+I modified one of the HOMER scripts that converts HOMER peak files to bed fils: use pos2bedmol.pl instead of pos2bed.pl <br/>
+The only changes is that the modified version puts the findPeaks score in the 4th column of the bed file by changing this line in pos2bed.pl:<br/>
+	#print $filePtr "$chr\t$start\t$end\t$line[0]\t$v\t$dir\n"; to this line: print $filePtr "$chr\t$start\t$end\t$line[7]\t$v\t$dir\n"
+
+    perl pos2bedmod.pl homer_regions/tmp.txt > homer_regions/tmp.bed
+    
+Since we aligned to the ensembl genes we have to add "chr" to the chormosome names to load unto the UCSC browser. Then remove the intermediate tmp files.
+
+    sed 's/^/chr/' homer_regions/tmp.bed > homer_regions/Homerpeaks_H3K27ac_HDAC1_2KO.bed
+    
+  
+    rm homer_regions/tmp*
+
+Repeat steps with WT:
+     
+    grep -v '^#' homer_regions/Homerpeaks_H3K27ac_WT.txt > homer_regions/tmp.txt
+    perl pos2bedmod.pl homer_regions/tmp.txt > homer_regions/tmp.bed
+    sed 's/^/chr/' homer_regions/tmp.bed > homer_regions/Homerpeaks_H3K27ac_WT.bed
+    rm homer_regions/tmp*
+    
+Repeat with combined peakfiles 
+
+    grep -v '^#' homer_regions/Homerpeaks_H3K27ac_all.txt > homer_regions/tmp.txt
+    perl pos2bedmod.pl homer_regions/tmp.txt > homer_regions/tmp.bed
+    sed 's/^/chr/' homer_regions/tmp.bed > homer_regions/Homerpeaks_H3K27ac_all.bed
+    rm homer_regions/tmp*
+    
+### Step 5: 
 Call getDiffExpression.pl and ultimately passes these values to the R/Bioconductor package DESeq2 to calculate enrichment values for each peak, returning only those peaks that pass a given fold enrichment (default: 2-fold) and FDR cutoff (default 5%).<br/>
 
 The getDiffExpression.pl program is executed with the following arguments:<br/>
