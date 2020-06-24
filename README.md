@@ -316,7 +316,14 @@ Compute a coverage matrix for each bed file genes from your normalized bigwig fi
 
 
 ## 12. Peak Calling with HOMER
-up until this point the pipeline is relatively standard for all PE ChIPseq experiments. The choice of peak callers and settings depends on what type of ChIP experiment you are performing (ie. histone marks vs. transcription factors). This dataset was for H3K27ac and H3K9ac, both classic histone acetylation marks that are analyzed nicely with HOMER using -style histone and some custom settings based on knowledge of how these two marks behave. If you are working with other ChIP datasets where the marks are either more or less peak like you need to make adjustments to the HOMER calls. See http://homer.ucsd.edu/homer/ngs/peaks.html for details.
+Up until this point the pipeline is relatively standard for all PE ChIPseq experiments. The choice of peak callers and settings depends on what type of ChIP experiment you are performing (ie. histone marks vs. transcription factors). This dataset was for H3K27ac and H3K9ac, both classic histone acetylation marks that are analyzed nicely with HOMER using -style histone and some custom settings based on knowledge of how these two marks behave. If you are working with other ChIP datasets where the marks are either more or less peak like you need to make adjustments to the HOMER calls. See http://homer.ucsd.edu/homer/ngs/peaks.html for details.
+
+From two recent microglial ChIPseq papers:
+From Wendeln 2018 (https://www.nature.com/articles/s41586-018-0023-4): Tag directories were created from bam files using ‘makeTagDirectory’ for individual samples and inputs, and peak calling was performed using ‘findpeaks -style histone’ with fourfold enrichment over background and input, a Poisson P value of 0.0001, and a peak width of 500 bp for H3K4me1 and 250 bp for H3K27ac. 
+
+From Goseelin 2017 (https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5858585/):ChIP-seq Tag directories for the ChIP-seq experiments were combined into ex vivo and in vitro pools for each target in both mouse and human. The tag directories for the input DNA were likewise combined. Peaks were then called on the pooled tags with the pooled input DNA as background using HOMER’s “findPeaks” command with the following parameters for the PU.1 ChIP-seq: “-style factor -size 200 -minDist 200” and the following parameters for the H3K27ac and H3K4me2 ChIP-seq: “-style histone -size 500 -minDist 1000 -region.” The “-tbp” parameter was set to the number of replicates in the pool.
+
+We can try both approaches and compare the results on the UCSC genome browser to see which peak calling conditions best capture the data.
 
 ### Make Tag Directories
 The first step to running HOMER is to make Tag Directories: http://homer.ucsd.edu/homer/ngs/tagDir.html
@@ -359,6 +366,7 @@ To make a tag directory for each sample run:
       sbatch HOMER_MakeTags.sh
 
 ### Call Peaks and Find Differential Peaks Between Conditions
+
 There are several different approaches to analyze this data using HOMER. I have summarized the main points below but you should read the full HOMER ChIPseq documentation before running your own experiment. <br/>
 
 From the HOMER website:http://homer.ucsd.edu/homer/ngs/peaksReplicates.html<br/>
@@ -396,7 +404,7 @@ You can also set -style to "factor" for transcription factors with small binding
 
 
 ## Approach #2: Multi-Step with getDiffExpression.pl
-The first approach works well with lots of replicates and high quality data, etc. We only have 2-3 replicates and so the following approach basically does the same thing as approach #1 but in individual steps that allow us to fine tune each step for our data. <br/>
+The first approach works well with lots of replicates and high quality data, etc. We only have 2-3 replicates and so the following approach basically does the same thing as approach #1 but in individual steps that allow us to fine tune each step for our data. This is also the approache both the Wendln and Gosselin papers used.<br/>
 
 ### Step 1: 
 Pool the target tag directories and input directories separately into pooled experiments and perform an initial peak identification using findPeaks. Pooling the experiments is generally more sensitive than trying to merge the individual peak files coming from each experiment (although this can be done using the "-use <peaks.txt...>" option if each directory already has a peak file associated with it).
@@ -446,29 +454,49 @@ Make tag directories for WT MG Input
 ### Step 2: 
 Find peaks for each pooled H3K27ac directory compared to pooled input directory.
 
+## using parameters from Wendeln:
+
+From Wendeln 2018 (https://www.nature.com/articles/s41586-018-0023-4): Tag directories were created from bam files using ‘makeTagDirectory’ for individual samples and inputs, and peak calling was performed using ‘findpeaks -style histone’ with fourfold enrichment over background and input, a Poisson P value of 0.0001, and a peak width of 500 bp for H3K4me1 and 250 bp for H3K27ac. <br/>
+
+Since we don't have individual input files matched to samples like Wendeln did, we will used the pooledtag directories and call peaks using their settings. The fourfold enrichment over background and input, a Poisson P value of 0.0001 are the default values.<br/>
+
+make a folder for homer_regions:
+
+	mkdir homer_regions/
+		
 HDAC1/2 KO:
 
-    findPeaks TagDirectory/Pooltag_H3K27ac_HDAC12KO -style histone -size 250 -minDist 500 -i TagDirectory/Pooltag_input_HDAC1_2KO -o homer_regions/Homerpeaks_H3K27ac_HDAC1_2KO.txt
+    findPeaks TagDirectory/Pooltag_H3K27ac_HDAC12KO -style histone -size 250 -i TagDirectory/Pooltag_input_HDAC1_2KO -o homer_regions/HomerpeaksWendlen_H3K27ac_HDAC1_2KO.txt
 
 HDAC1/2 WT:
 
-    findPeaks TagDirectory/Pooltag_H3K27ac_WT -style histone -size 250 -minDist 500 -i TagDirectory/Pooltag_input_WT -o homer_regions/Homerpeaks_H3K27ac_WT.txt
+    findPeaks TagDirectory/Pooltag_H3K27ac_WT -style histone -size 250 -i TagDirectory/Pooltag_input_WT -o homer_regions/HomerpeaksWendlen_H3K27ac_WT.txt
 
+
+## using parameters from Gosselin:
+
+From Gosselin 2017 (https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5858585/):ChIP-seq Tag directories for the ChIP-seq experiments were combined into ex vivo and in vitro pools for each target in both mouse and human. The tag directories for the input DNA were likewise combined. Peaks were then called on the pooled tags with the pooled input DNA as background using HOMER’s “findPeaks” command with the following parameters for the PU.1 ChIP-seq: “-style factor -size 200 -minDist 200” and the following parameters for the H3K27ac and H3K4me2 ChIP-seq: “-style histone -size 500 -minDist 1000 -region.” The “-tbp” parameter was set to the number of replicates in the pool.<br/>
+
+Here are some of the conditions that are different between the two approaches:<br/>
+-region (extends start/stop coordinates to cover full region considered "enriched")<br/>
+-minDist <#> (minimum distance between peaks, default: peak size x2)<br/>
+-tbp <#> (Maximum tags per bp to count, 0 = no limit, default: auto)<br/>
+
+HDAC1/2 KO: 3 replicates
+
+    findPeaks TagDirectory/Pooltag_H3K27ac_HDAC12KO -style histone -size 500 -minDist 1000 -region -tbp 3 -i TagDirectory/Pooltag_input_HDAC1_2KO -o homer_regions/HomerpeaksGosselin_H3K27ac_HDAC1_2KO.txt
+
+HDAC1/2 WT: 2 replicates
+
+    findPeaks TagDirectory/Pooltag_H3K27ac_WT -style histone -size 500 -minDist 1000 -region -tbp 2 -i TagDirectory/Pooltag_input_WT -o homer_regions/HomerpeaksGosselin_H3K27ac_WT.txt
+
+Run peak finding as a script for both H3K27ac (lines above) and H3K9ac:
+
+	
 
 ### Step 3: 
-Combine WT and KO peaks into one file for annotation using mergPeaks:
 
-    mergePeaks homer_regions/Homerpeaks_H3K27ac_HDAC1_2KO.txt homer_regions/Homerpeaks_H3K27ac_WT.txt > homer_regions/Homerpeaks_H3K27ac_all.txt
-
-Quantify the reads at the initial putative peaks across each of the target and input tag directories using annotatePeaks.pl. 
-http://homer.ucsd.edu/homer/ngs/diffExpression.html. This generate raw counts file from each tag directory for each sample for the merged peaks.<br/>
-
-IMPORTANT: Make sure you remember the order that your experiments and replicates where entered in for generating these commands.  Because experiment names can be cryptic, you will need to specify which experiments are which when running getDiffExpression.pl to assign replicates and conditions.<br/>
-  
-    annotatePeaks.pl homer_regions/Homerpeaks_H3K27ac_all.txt mm10 -raw -d TagDirectory/tag_SRR6326785 TagDirectory/tag_SRR6326800 TagDirectory/tag_SRR6326801  TagDirectory/tag_SRR6326796 TagDirectory/tag_SRR6326798 > countTable.H3K27ac_all.peaks.txt
-
-### Step 4:
-Convert the peak files into bed files to load onto the UCSC genome browser.
+Convert the peak files into bed files to load onto the UCSC genome browser. 
 
 Remove the extra # lines in the Homer output 
     
@@ -487,20 +515,28 @@ Since we aligned to the ensembl genes we have to add "chr" to the chormosome nam
   
     rm homer_regions/tmp*
 
-Repeat steps with WT:
+Run the steps for all 4 peak files with this script:
      
     grep -v '^#' homer_regions/Homerpeaks_H3K27ac_WT.txt > homer_regions/tmp.txt
     perl pos2bedmod.pl homer_regions/tmp.txt > homer_regions/tmp.bed
     sed 's/^/chr/' homer_regions/tmp.bed > homer_regions/Homerpeaks_H3K27ac_WT.bed
     rm homer_regions/tmp*
     
-Repeat with combined peakfiles 
 
-    grep -v '^#' homer_regions/Homerpeaks_H3K27ac_all.txt > homer_regions/tmp.txt
-    perl pos2bedmod.pl homer_regions/tmp.txt > homer_regions/tmp.bed
-    sed 's/^/chr/' homer_regions/tmp.bed > homer_regions/Homerpeaks_H3K27ac_all.bed
-    rm homer_regions/tmp*
-    
+ 
+ ### Step 4:
+   Combine WT and KO peaks into one file for annotation using mergPeaks:
+
+    mergePeaks homer_regions/Homerpeaks_H3K27ac_HDAC1_2KO.txt homer_regions/Homerpeaks_H3K27ac_WT.txt > homer_regions/Homerpeaks_H3K27ac_all.txt
+
+Quantify the reads at the initial putative peaks across each of the target and input tag directories using annotatePeaks.pl. 
+http://homer.ucsd.edu/homer/ngs/diffExpression.html. This generate raw counts file from each tag directory for each sample for the merged peaks.<br/>
+
+IMPORTANT: Make sure you remember the order that your experiments and replicates where entered in for generating these commands.  Because experiment names can be cryptic, you will need to specify which experiments are which when running getDiffExpression.pl to assign replicates and conditions.<br/>
+  
+    annotatePeaks.pl homer_regions/Homerpeaks_H3K27ac_all.txt mm10 -raw -d TagDirectory/tag_SRR6326785 TagDirectory/tag_SRR6326800 TagDirectory/tag_SRR6326801  TagDirectory/tag_SRR6326796 TagDirectory/tag_SRR6326798 > countTable.H3K27ac_all.peaks.txt
+
+
 ### Step 5: 
 Call getDiffExpression.pl and ultimately passes these values to the R/Bioconductor package DESeq2 to calculate enrichment values for each peak, returning only those peaks that pass a given fold enrichment (default: 2-fold) and FDR cutoff (default 5%).<br/>
 
