@@ -55,7 +55,7 @@ makeTagDirectory TagDirectory/Pooltag_H3K9ac_WT aligned/SRR6326790_dedup.bam ali
 #H3K9ac Wendlen
 #######################################################################################
 #HDAC1/2KO:
-findPeaks TagDirectory/Pooltag_H3K9ac_HDAC12KO -style histone -size 250 -i TagDirectory/Pooltag_input_HDAC1_2KO -o homer_regions/HomerpeaksWendlen_H3K9ac_HDAC1_2KO.txt
+findPeaks TagDirectory/Pooltag_H3K9ac_HDAC1_2KO -style histone -size 250 -i TagDirectory/Pooltag_input_HDAC1_2KO -o homer_regions/HomerpeaksWendlen_H3K9ac_HDAC1_2KO.txt
 
 #WT
 findPeaks TagDirectory/Pooltag_H3K9ac_WT -style histone -size 250 -i TagDirectory/Pooltag_input_WT -o homer_regions/HomerpeaksWendlen_H3K9ac_WT.txt
@@ -66,7 +66,7 @@ findPeaks TagDirectory/Pooltag_H3K9ac_WT -style histone -size 250 -i TagDirector
 #######################################################################################
 
 #HDAC1/2 KO: 2 replicates
-findPeaks TagDirectory/Pooltag_H3K9ac_HDAC12KO -style histone -size 500 -minDist 1000 -region -tbp 2 -i TagDirectory/Pooltag_input_HDAC1_2KO -o homer_regions/HomerpeaksGosselin_H3K9ac_HDAC1_2KO.txt
+findPeaks TagDirectory/Pooltag_H3K9ac_HDAC1_2KO -style histone -size 500 -minDist 1000 -region -tbp 2 -i TagDirectory/Pooltag_input_HDAC1_2KO -o homer_regions/HomerpeaksGosselin_H3K9ac_HDAC1_2KO.txt
 
 #HDAC1/2 WT: 3 replicates
 findPeaks TagDirectory/Pooltag_H3K9ac_WT -style histone -size 500 -minDist 1000 -region -tbp 3 -i TagDirectory/Pooltag_input_WT -o homer_regions/HomerpeaksGosselin_H3K9ac_WT.txt
