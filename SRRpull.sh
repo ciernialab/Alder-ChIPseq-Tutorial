@@ -4,7 +4,7 @@
 #SBATCH --mem-per-cpu=2000
 #SBATCH --job-name=SRAfetch
 #SBATCH --output=SRAfetch.out
-#SBATCH --time=8:00:00
+#SBATCH --time=12:00:00
 
 
 #HDAC1&2 CHIPSEQ analysis
