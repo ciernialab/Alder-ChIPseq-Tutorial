@@ -606,7 +606,40 @@ The "-norm2total" option is very useful for ChIP-Seq when you do not expect the 
     getDiffExpression.pl countTable.Gosselin.H3K9ac.peaks.txt Hdac12KO Hdac12KO WT WT WT -simpleNorm -simpleNorm > DEpeaks/Gosselin.H3K9ac_diffpeaksOutput.txt
 
 
-
 ### Step 6: look at DE peaks on UCSC genome browser and see if they are reasonable
+We will next examine the ouput of getDiffExpression.pl. If you open the DiffPeak.out log file you will find the following for each comparisons we did:<br/>
+
+Wendlen.H3K27ac:<br/>
+Using DESeq2 to calculate differential expression/enrichment...<br/>
+        Output Stats Hdac12KO vs. WT:<br/>
+                Total Genes: 472236<br/>
+                Total Up-regulated in WT vs. Hdac12KO: 0 (0.000%) [log2fold>1, FDR<0.05]<br/>
+                Total Dn-regulated in WT vs. Hdac12KO: 1 (0.000%) [log2fold<-1, FDR<0.05]<br/>
+
+
+Gosselin.H3K27ac:<br/>
+Using DESeq2 to calculate differential expression/enrichment...<br/>
+        Output Stats Hdac12KO vs. WT:<br/>
+                Total Genes: 221433<br/>
+                Total Up-regulated in WT vs. Hdac12KO: 0 (0.000%) [log2fold>1, FDR<0.05]<br/>
+                Total Dn-regulated in WT vs. Hdac12KO: 1 (0.000%) [log2fold<-1, FDR<0.05]<br/>
+
+Wendlen.H3K9ac:<br/>
+Using DESeq2 to calculate differential expression/enrichment...<br/>
+        Output Stats Hdac12KO vs. WT:<br/>
+                Total Genes: 475806<br/>
+                Total Up-regulated in WT vs. Hdac12KO: 297 (0.062%) [log2fold>1, FDR<0.05]<br/>
+                Total Dn-regulated in WT vs. Hdac12KO: 1072 (0.225%) [log2fold<-1, FDR<0.05]<br/>
+
+Gosselin.H3K9ac:<br/>
+Using DESeq2 to calculate differential expression/enrichment...<br/>
+        Output Stats Hdac12KO vs. WT:<br/>
+                Total Genes: 228263<br/>
+                Total Up-regulated in WT vs. Hdac12KO: 852 (0.373%) [log2fold>1, FDR<0.05]<br/>
+                Total Dn-regulated in WT vs. Hdac12KO: 2678 (1.173%) [log2fold<-1, FDR<0.05]<br/>
+
+So it looks like more differences bewteen HDAC1/2KO and WT for H3K9ac regardless of the peak settings.The Gosselin peaks show more differential peaks, which is potentially expected as the peaks are larger. <br/>
+
+We can open the DE peak files  and look at several top regions the UCSC genome browser. Do they look different?
 
 ### Step 7: Make Deeplots heatmap and profile over DE peaks
