@@ -67,7 +67,7 @@ grep -v '^#' homer_regions/HomerpeaksWendlen_H3K9ac_HDAC1_2KO.txt > homer_region
 
 #WT
   
-    grep -v '^#' homer_regions/HomerpeaksWendlen_H39ac_WT.txt > homer_regions/tmp.txt
+    grep -v '^#' homer_regions/HomerpeaksWendlen_H3K9ac_WT.txt > homer_regions/tmp.txt
     
     perl pos2bedmod.pl homer_regions/tmp.txt > homer_regions/tmp.bed
     
