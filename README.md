@@ -550,6 +550,8 @@ Run the following script:
 	
 The script performs the following steps:
 
+	mkdir DEpeaks/
+
 Combine WT and KO peaks into one file for annotation using mergPeaks. <br/>
 For H3K27ac peaks:<br/>
 
@@ -568,13 +570,13 @@ http://homer.ucsd.edu/homer/ngs/diffExpression.html. This generate raw counts fi
 
 IMPORTANT: Make sure you remember the order that your experiments and replicates where entered in for generating these commands.  Because experiment names can be cryptic, you will need to specify which experiments are which when running getDiffExpression.pl to assign replicates and conditions.<br/>
   
-    	annotatePeaks.pl homer_regions/HomerpeaksWendlen_H3K27ac_all.txt mm10 -raw -d TagDirectory/tag_SRR6326785 TagDirectory/tag_SRR6326800 TagDirectory/tag_SRR6326801  TagDirectory/tag_SRR6326796 TagDirectory/tag_SRR6326798 > countTable.Wendlen.H3K27ac_all.peaks.txt
+    	annotatePeaks.pl homer_regions/HomerpeaksWendlen_H3K27ac_all.txt mm10 -raw -d TagDirectory/tag_SRR6326785 TagDirectory/tag_SRR6326800 TagDirectory/tag_SRR6326801  TagDirectory/tag_SRR6326796 TagDirectory/tag_SRR6326798 > DEpeaks/countTable.Wendlen.H3K27ac_all.peaks.txt
 
-	annotatePeaks.pl homer_regions/HomerpeaksGosselin_H3K27ac_all.txt mm10 -raw -d TagDirectory/tag_SRR6326785 TagDirectory/tag_SRR6326800 TagDirectory/tag_SRR6326801  TagDirectory/tag_SRR6326796 TagDirectory/tag_SRR6326798 > countTable.Gosselin.H3K27ac_all.peaks.txt
+	annotatePeaks.pl homer_regions/HomerpeaksGosselin_H3K27ac_all.txt mm10 -raw -d TagDirectory/tag_SRR6326785 TagDirectory/tag_SRR6326800 TagDirectory/tag_SRR6326801  TagDirectory/tag_SRR6326796 TagDirectory/tag_SRR6326798 > DEpeaks/countTable.Gosselin.H3K27ac_all.peaks.txt
 	
-	annotatePeaks.pl homer_regions/HomerpeaksWendlen_H3K9ac_all.peaks.txt mm10 -raw -d TagDirectory/tag_SRR6326786 TagDirectory/tag_SRR6326788 TagDirectory/tag_SRR6326790 TagDirectory/tag_SRR6326792 TagDirectory/tag_SRR6326794 > countTable.Wendlen.H3K9ac.peaks.txt
+	annotatePeaks.pl homer_regions/HomerpeaksWendlen_H3K9ac_all.peaks.txt mm10 -raw -d TagDirectory/tag_SRR6326786 TagDirectory/tag_SRR6326788 TagDirectory/tag_SRR6326790 TagDirectory/tag_SRR6326792 TagDirectory/tag_SRR6326794 > DEpeaks/countTable.Wendlen.H3K9ac.peaks.txt
 
-	annotatePeaks.pl homer_regions/HomerpeaksGosselin_H3K9ac_all.peaks.txt mm10 -raw -d TagDirectory/tag_SRR6326786 TagDirectory/tag_SRR6326788 TagDirectory/tag_SRR6326790 TagDirectory/tag_SRR6326792 TagDirectory/tag_SRR6326794 > countTable.Gosselin.H3K9ac.peaks.txt
+	annotatePeaks.pl homer_regions/HomerpeaksGosselin_H3K9ac_all.peaks.txt mm10 -raw -d TagDirectory/tag_SRR6326786 TagDirectory/tag_SRR6326788 TagDirectory/tag_SRR6326790 TagDirectory/tag_SRR6326792 TagDirectory/tag_SRR6326794 > DEpeaks/countTable.Gosselin.H3K9ac.peaks.txt
 
 Calls getDiffExpression.pl and ultimately passes these values to the R/Bioconductor package DESeq2 to calculate enrichment values for each peak, returning only those peaks that pass a given fold enrichment (default: 2-fold) and FDR cutoff (default 5%).<br/>
 
@@ -595,13 +597,13 @@ Differential enrichment calculation normalizes to the total mapped reads in the 
 The "-norm2total" option is very useful for ChIP-Seq when you do not expect the signal from each experiment to be comparable, like when comparing target vs. IgG experiemnts.  However, if you were comparing a type of experiment where you do expect similar signal (for example, H3K27ac levels might be assumed to be similar across conditions), it is not recommended that you use the "-norm2total" option.<br/>
 
   
-    getDiffExpression.pl countTable.Wendlen.H3K27ac_all.peaks.txt Hdac12KO Hdac12KO Hdac12KO WT WT -simpleNorm > Wendlen.H3K27ac_diffpeaksOutput.txt
+    getDiffExpression.pl countTable.Wendlen.H3K27ac_all.peaks.txt Hdac12KO Hdac12KO Hdac12KO WT WT -simpleNorm > DEpeaks/Wendlen.H3K27ac_diffpeaksOutput.txt
     
-    getDiffExpression.pl countTable.Gosselin.H3K27ac_all.peaks.txt Hdac12KO Hdac12KO Hdac12KO WT WT -simpleNorm > Gosselin.H3K27ac_diffpeaksOutput.txt
+    getDiffExpression.pl countTable.Gosselin.H3K27ac_all.peaks.txt Hdac12KO Hdac12KO Hdac12KO WT WT -simpleNorm > DEpeaks/Gosselin.H3K27ac_diffpeaksOutput.txt
 
-    getDiffExpression.pl countTable.Wendlen.H3K9ac.peaks.txt Hdac12KO Hdac12KO WT WT WT -simpleNorm -simpleNorm > Wendlen.H3K9ac_diffpeaksOutput.txt
+    getDiffExpression.pl countTable.Wendlen.H3K9ac.peaks.txt Hdac12KO Hdac12KO WT WT WT -simpleNorm -simpleNorm > DEpeaks/Wendlen.H3K9ac_diffpeaksOutput.txt
     
-    getDiffExpression.pl countTable.Gosselin.H3K9ac.peaks.txt Hdac12KO Hdac12KO WT WT WT -simpleNorm -simpleNorm > Gosselin.H3K9ac_diffpeaksOutput.txt
+    getDiffExpression.pl countTable.Gosselin.H3K9ac.peaks.txt Hdac12KO Hdac12KO WT WT WT -simpleNorm -simpleNorm > DEpeaks/Gosselin.H3K9ac_diffpeaksOutput.txt
 
 
 
