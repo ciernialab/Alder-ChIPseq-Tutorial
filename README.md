@@ -523,8 +523,27 @@ Since we aligned to the ensembl genes we have to add "chr" to the chormosome nam
   
     rm homer_regions/tmp*
  
- ### Step 4:
-   Combine WT and KO peaks into one file for annotation using mergPeaks:
+
+## Step 4. UCSC Genome Browser Tracks (HOMER)
+The basic strategy HOMER uses is to create a bedGraph formatted file that can then be uploaded as a custom track to the genome browser.  This is accomplished using the makeUCSCfile program.  To make a ucsc visualization file, type the following. To visualize the exact length of the reads, use "-fragLength given".<br/> 
+
+makeUCSCfile <tag directory> -o auto -fragLength given <br/> 
+
+i.e. makeUCSCfile PU.1-ChIP-Seq/ -o auto<br/> 
+(output file will be in the PU.1-ChIP-Seq/ folder named PU.1-ChIP-Seq.ucsc.bedGraph.gz)<br/> 
+
+The "-o auto" with make the program automatically generate an output file name (i.e. TagDirectory.ucsc.bedGraph.gz) and place it in the tag directory which helps with the organization of all these files.  The output file can be named differently by specifying "-o outputfilename" or by simply omitting "-o", which will send the output of the program to stdout (i.e. add " > outputfile" to capture it in the file outputfile).  It is recommended that you zip the file using gzip and directly upload the zipped file when loading custom tracks at UCSC.<br/> 
+
+To visualize the experiment in the UCSC Genome Browser, go to Genome Browser page and select the appropriate genome (i.e. the genome that the sequencing tags were mapped to).  Then click on the "add custom tracks" button (this will read "manage custom tracks" once at least one custom track is loaded).  Enter the file created earlier in the "Paste URLs or data" section and click "Submit".<br/> 
+
+There are two important parameters to consider during normalization of data.  First, the total read depth of the experiment is important, which is obvious.  The 2nd factor to consider is the length of the reads (this is new to v4.4).  The problem is that if an experiment has longer fragment lengths, it will generate additional coverage than an experiment with shorter fragment lengths.  In order to make sure there total area under the curve is the same for each experiment, experiments are normalized to a fixed number of reads as well as a 100 bp fragment length.  If reads are longer than 100 bp, they are 'down-normalized' a fractional amount such that they produce the same relative coverage of a 100 bp fragment length.  Experiments with shorter fragment lengths are 'up-normalized' a proportional amount (maximum of 4x or 25 bp).  This allows experiments with different fragment lengths to be comparable along the genome browser.<br/> Normalize the total number of reads to this number, default 1e7.  This means that tags from an experiment with only 5 million mapped tags will count for 2 tags apiece.
+
+
+    sbatch UCSCBrowserHOMER.sh
+
+
+### Step 5:
+   Combine WT and KO peaks into one file for annotation using mergPeaks. For Wendeln peaks:
 
     mergePeaks homer_regions/Homerpeaks_H3K27ac_HDAC1_2KO.txt homer_regions/Homerpeaks_H3K27ac_WT.txt > homer_regions/Homerpeaks_H3K27ac_all.txt
 
@@ -536,7 +555,7 @@ IMPORTANT: Make sure you remember the order that your experiments and replicates
     annotatePeaks.pl homer_regions/Homerpeaks_H3K27ac_all.txt mm10 -raw -d TagDirectory/tag_SRR6326785 TagDirectory/tag_SRR6326800 TagDirectory/tag_SRR6326801  TagDirectory/tag_SRR6326796 TagDirectory/tag_SRR6326798 > countTable.H3K27ac_all.peaks.txt
 
 
-### Step 5: 
+### Step 6: 
 Call getDiffExpression.pl and ultimately passes these values to the R/Bioconductor package DESeq2 to calculate enrichment values for each peak, returning only those peaks that pass a given fold enrichment (default: 2-fold) and FDR cutoff (default 5%).<br/>
 
 The getDiffExpression.pl program is executed with the following arguments:<br/>
@@ -565,19 +584,7 @@ The "-norm2total" option is very useful for ChIP-Seq when you do not expect the 
 
     sbatch H3K9ac_HOMER2.sh 
 
-## 13. UCSC Genome Browser Tracks (HOMER)
-The basic strategy HOMER uses is to create a bedGraph formatted file that can then be uploaded as a custom track to the genome browser.  This is accomplished using the makeUCSCfile program.  To make a ucsc visualization file, type the following. To visualize the exact length of the reads, use "-fragLength given".<br/> 
 
-makeUCSCfile <tag directory> -o auto -fragLength given <br/> 
+### Step 7: look at DE peaks on UCSC genome browser and see if they are reasonable
 
-i.e. makeUCSCfile PU.1-ChIP-Seq/ -o auto<br/> 
-(output file will be in the PU.1-ChIP-Seq/ folder named PU.1-ChIP-Seq.ucsc.bedGraph.gz)<br/> 
-
-The "-o auto" with make the program automatically generate an output file name (i.e. TagDirectory.ucsc.bedGraph.gz) and place it in the tag directory which helps with the organization of all these files.  The output file can be named differently by specifying "-o outputfilename" or by simply omitting "-o", which will send the output of the program to stdout (i.e. add " > outputfile" to capture it in the file outputfile).  It is recommended that you zip the file using gzip and directly upload the zipped file when loading custom tracks at UCSC.<br/> 
-
-To visualize the experiment in the UCSC Genome Browser, go to Genome Browser page and select the appropriate genome (i.e. the genome that the sequencing tags were mapped to).  Then click on the "add custom tracks" button (this will read "manage custom tracks" once at least one custom track is loaded).  Enter the file created earlier in the "Paste URLs or data" section and click "Submit".<br/> 
-
-There are two important parameters to consider during normalization of data.  First, the total read depth of the experiment is important, which is obvious.  The 2nd factor to consider is the length of the reads (this is new to v4.4).  The problem is that if an experiment has longer fragment lengths, it will generate additional coverage than an experiment with shorter fragment lengths.  In order to make sure there total area under the curve is the same for each experiment, experiments are normalized to a fixed number of reads as well as a 100 bp fragment length.  If reads are longer than 100 bp, they are 'down-normalized' a fractional amount such that they produce the same relative coverage of a 100 bp fragment length.  Experiments with shorter fragment lengths are 'up-normalized' a proportional amount (maximum of 4x or 25 bp).  This allows experiments with different fragment lengths to be comparable along the genome browser.<br/> Normalize the total number of reads to this number, default 1e7.  This means that tags from an experiment with only 5 million mapped tags will count for 2 tags apiece.
-
-
-    sbatch UCSCBrowserHOMER.sh
+### Step 8: Make Deeplots heatmap and profile over DE peaks
