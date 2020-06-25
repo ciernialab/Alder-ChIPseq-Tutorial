@@ -10,16 +10,16 @@
 #fastqc and then combine reports into one html and save to outputs folder
 
 #######################################################################################
-mkdir -p /output/pretrim
+mkdir -p output/pretrim
 
 for sample in `cat SRR_Acc_List.txt`
 do
 
 echo ${sample} "starting"
 
-fastqc /alder/data/cbh/ciernia-data/HDAC1_2_ChIPseq/SRA/${sample}_1.fastq.gz --outdir output/pretrim
+fastqc SRA/${sample}_1.fastq.gz --outdir output/pretrim
 
-fastqc /alder/data/cbh/ciernia-data/HDAC1_2_ChIPseq/SRA/${sample}_2.fastq.gz --outdir output/pretrim
+fastqc SRA/${sample}_2.fastq.gz --outdir output/pretrim
 
 echo ${sample} "finished"
 
