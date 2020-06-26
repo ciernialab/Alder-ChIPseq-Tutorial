@@ -9,8 +9,8 @@
 ##Trimmomatic for PE
 #trim adapters (TruSeq3-PE.fa)
 # TruSeq3-PE.fa must be in the same folder as the fastq files
-#mkdir trimmed
-mkdir -p outputs/trimlogs
+mkdir trimmed
+mkdir -p output/trimlogs
 
 for sample in `cat SRR_Acc_List.txt`
 do
