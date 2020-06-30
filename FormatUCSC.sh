@@ -59,3 +59,6 @@ sed -i "1n; s/^/chr/" UCSCbrowsertracks/WT_H3K9ac_Repl2.bedGraph
 
 #skip the first line, then add "chr" to each chromosome
 sed -i "1n; s/^/chr/" UCSCbrowsertracks/WT_H3K9ac_Repl3.bedGraph
+
+#zip files
+gzip UCSCbrowsertracks/*.bedGraph
