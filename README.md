@@ -508,7 +508,7 @@ What the script does:
 
 Remove the extra # lines in the Homer output 
     
-    grep -v '^#' homer_regions/Homerpeaks_H3K27ac_HDAC1_2KO.txt > homer_regions/tmp.txt
+    grep -v '^#' homer_regions/homer_regions/HomerpeaksGosselin_H3K27ac_WT.txt > homer_regions/tmp.txt
 
 I modified one of the HOMER scripts that converts HOMER peak files to bed fils: use pos2bedmol.pl instead of pos2bed.pl <br/>
 The only changes is that the modified version puts the findPeaks score in the 4th column of the bed file by changing this line in pos2bed.pl:<br/>
@@ -518,7 +518,7 @@ The only changes is that the modified version puts the findPeaks score in the 4t
     
 Since we aligned to the ensembl genes we have to add "chr" to the chormosome names to load unto the UCSC browser. Then remove the intermediate tmp files.
 
-    sed 's/^/chr/' homer_regions/tmp.bed > homer_regions/Homerpeaks_H3K27ac_HDAC1_2KO.bed
+    sed 's/^/chr/' homer_regions/tmp.bed > homer_regions/HomerpeaksGosselin_H3K27ac_WT.bed
     
   
     rm homer_regions/tmp*
@@ -542,8 +542,32 @@ There are two important parameters to consider during normalization of data.  Fi
     sbatch UCSCBrowserHOMER.sh
 
 
-### Step 5:
+We then have to fix the chromosome names to include "chr" and change the MT chromosome to M.
 
+	sbatch FormatUCSC.sh
+
+### Step 5: Look at overlapping peaks with Upset plots
+Code from:
+https://github.com/stevekm/Bioinformatics/blob/a2a052029980369545085aadbd478e32c8ba6213/HOMER_mergePeaks_pipeline/peak_overlap_HOMER_mergePeak_pipeline.sh
+This pipeline performs HOMER mergePeaks on a large amount of paired BED files, to find overlapping genomic regions. These overlaps are then visualized with Venn diagrams and UpSet plots.
+
+This simple workflow uses the venn.txt output from HOMER's mergePeaks command to visualize the overlaps between different sets of peaks (such as .bed files from a ChIP-Seq experiment), using the UpSetR package for R version 3.3.0.
+
+In this example, the venn.txt file would have been created by using a HOMER command such as this:
+
+		mergePeaks homer_regions/HomerpeaksGosselin_H3K27ac_WT.bed homer_regions/HomerpeaksGosselin_H3K27ac_HDAC1_2KO homer_regions/HomerpeaksWendlen_H3K27ac_WT.bed homer_regions/HomerpeaksWendlen_H3K27ac_HDAC1_2KO.bed -prefix mergepeaks -venn homer_regions/venn.H3K27ac.txt -matrix homer_regions/matrix.H3K27ac.txt
+
+
+Pass the venn.H3K27ac.txt file to the multi_peaks_UpSet_plot.R script like this:
+
+
+Rscript --vanilla multi_peaks_UpSet_plot.R "SampleID" homer_regions/venn.H3K27ac.txt
+
+The plot is saved to the same directory as the venn.H3K27ac.txt file.
+
+
+
+### Step 5: Identifiy differential peaks statistically
 Run the following script:
 
 	sbatch DifferentialPeaks.sh
