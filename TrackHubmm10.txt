@@ -20,7 +20,7 @@ aggregate transparentOverlay
 showSubtrackColorOnUi on
 
 	track WT_H3K27ac_repl1
-	bigDataUrl https://github.com/ciernialab/Alder-ChIPseq-Tutorial/blob/master/BigWigs/SRR6326796.bw
+	bigDataUrl https://raw.githubusercontent.com/ciernialab/Alder-ChIPseq-Tutorial/master/BigWigs/SRR6326796.bw
 	shortLabel WT H3K27ac repl1
 	longLabel WT H3K27ac repl1
 	parent WT_H3K27ac
@@ -29,7 +29,7 @@ showSubtrackColorOnUi on
 	type bigWig
 
 	track WT_H3K27ac_repl2
-	bigDataUrl https://github.com/ciernialab/Alder-ChIPseq-Tutorial/blob/master/BigWigs/SRR6326798.bw
+	bigDataUrl https://raw.githubusercontent.com/ciernialab/Alder-ChIPseq-Tutorial/master/BigWigs/SRR6326798.bw
 	shortLabel WT H3K27ac repl2
 	longLabel WT H3K27ac repl2
 	parent WT_H3K27ac
@@ -53,7 +53,7 @@ aggregate transparentOverlay
 showSubtrackColorOnUi on
 
 	track HDAC1&2KO_H3K27ac_repl1
-	bigDataUrl https://github.com/ciernialab/Alder-ChIPseq-Tutorial/blob/master/BigWigs/SRR6326785.bw
+	bigDataUrl https://raw.githubusercontent.com/ciernialab/Alder-ChIPseq-Tutorial/master/BigWigs/SRR6326785.bw
 	shortLabel HDAC1&2KO H3K27ac repl1
 	longLabel HDAC1&2KO H3K27ac repl1
 	parent HDAC1&2KO_H3K27ac
@@ -62,7 +62,7 @@ showSubtrackColorOnUi on
 	type bigWig
 
 	track HDAC1&2KO_H3K27ac_repl2
-	bigDataUrl https://github.com/ciernialab/Alder-ChIPseq-Tutorial/blob/master/BigWigs/SRR6326800.bw
+	bigDataUrl https://raw.githubusercontent.com/ciernialab/Alder-ChIPseq-Tutorial/master/BigWigs/SRR6326800.bw
 	shortLabel HDAC1&2KO H3K27ac repl2
 	longLabel HDAC1&2KO H3K27ac repl2
 	parent HDAC1&2KO_H3K27ac
@@ -71,7 +71,7 @@ showSubtrackColorOnUi on
 	type bigWig
 	
 	track HDAC1&2KO_H3K27ac_repl3
-	bigDataUrl https://github.com/ciernialab/Alder-ChIPseq-Tutorial/blob/master/BigWigs/SRR6326801.bw
+	bigDataUrl https://raw.githubusercontent.com/ciernialab/Alder-ChIPseq-Tutorial/master/BigWigs/SRR6326801.bw
 	shortLabel HDAC1&2KO H3K27ac repl3
 	longLabel HDAC1&2KO H3K27ac repl3
 	parent HDAC1&2KO_H3K27ac
