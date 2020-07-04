@@ -546,6 +546,25 @@ We then have to fix the chromosome names to include "chr" and change the MT chro
 
 	sbatch FormatUCSC.sh
 
+
+The bedGraph.gz files then then be loaded one at a time as custom tracks onto the UCSC genome browser. You can save the session and then look at them again later. However, this is very slow as you have to load each final individually. Instead, we can create a track hub, where all of our files can be loaded as a custom hub. <br/>
+
+## Step 4B. UCSC Genome Browser My Hub
+We first have to convert our bedGraph and peak bed files into compressed formats: bigwig and bigBed. We can so this using bedtools.<br/>
+
+	Add script here for bigwig and bigbed conversion
+
+Now that we have our compressed files we can setup our track hub:<br/>
+Track hubs require a webserver to host the files. We can use github to host all files < 25MB. Github supports byte-range access to files when they are accessed via the raw.githubusercontent.com style URLs. To obtain a raw URL to a file already uploaded on Github, click on a file in your repository and click the Raw button. The bigDataUrl field (and any other statement pointing to a URL like bigDataIndex, refUrl, barChartMatrixUrl, etc.) of your trackDb.txt file should use the "raw.githubusercontent.com" style URL. <br/> https://genome.ucsc.edu/goldenPath/help/hgTrackHubHelp.html <br/>
+
+Track hubs can now be specified in a single text file: http://genome.ucsc.edu/goldenPath/help/hgTracksHelp.html#UseOneFile <br/>
+Once this text file is loaded onto github, you can get the RAW url for the text file and then check your hub works by pasting the url into the hub development took and clicking "Check Hub Settings".  http://genome.ucsc.edu/cgi-bin/hgHubConnect?#hubDeveloper
+If your hub has no errors you can then click the "View on UCSC browser" to view your hub.<br/>
+
+We have setup a hub using the TrackHubmm10.txt file. The link to this file is: https://raw.githubusercontent.com/ciernialab/Alder-ChIPseq-Tutorial/master/TrackHubmm10.txt <br/>
+If you paste this link into the "My Hubs" entry area: http://genome.ucsc.edu/cgi-bin/hgHubConnect?#unlistedHubs you can view the hub. You can edit the hub, add tracks etc. Then just check the hub, reload it and go!
+
+
 ### Step 5: Look at overlapping peaks with Upset plots
 Code from:
 https://github.com/stevekm/Bioinformatics/blob/a2a052029980369545085aadbd478e32c8ba6213/HOMER_mergePeaks_pipeline/peak_overlap_HOMER_mergePeak_pipeline.sh
