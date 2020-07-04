@@ -6,7 +6,7 @@ email annie.ciernia@ubc.ca
 
 genome mm10
 
-
+#https://raw.githubusercontent.com/ciernialab/Alder-ChIPseq-Tutorial/master/TrackHubmm10.txt
 #wT MG:
 #SRR6326796	H3K27ac
 #SRR6326798	H3K27ac
@@ -45,8 +45,9 @@ showSubtrackColorOnUi on
 #TagDirectory/tag_SRR6326800
 #TagDirectory/tag_SRR6326801
 
-
-shortLabel HDAC12KO_H3K27ac
+track HDAC1&2KO_H3K27ac
+container multiWig
+shortLabel HDAC1&2KO_H3K27ac
 longLabel HDAC1&2KO_H3K27ac
 type bigWig
 aggregate transparentOverlay
@@ -56,7 +57,7 @@ showSubtrackColorOnUi on
 	bigDataUrl https://raw.githubusercontent.com/ciernialab/Alder-ChIPseq-Tutorial/master/BigWigs/SRR6326785.bw
 	shortLabel HDAC1&2KO H3K27ac repl1
 	longLabel HDAC1&2KO H3K27ac repl1
-	parent HDAC12KO_H3K27ac
+	parent HDAC1&2KO_H3K27ac
 	color 198,34,71
 	viewLimits 0:1000
 	type bigWig
@@ -65,7 +66,7 @@ showSubtrackColorOnUi on
 	bigDataUrl https://raw.githubusercontent.com/ciernialab/Alder-ChIPseq-Tutorial/master/BigWigs/SRR6326800.bw
 	shortLabel HDAC1&2KO H3K27ac repl2
 	longLabel HDAC1&2KO H3K27ac repl2
-	parent HDAC12KO_H3K27ac
+	parent HDAC1&2KO_H3K27ac
 	color 140,34,240
 	viewLimits 0:1000
 	type bigWig
@@ -74,7 +75,7 @@ showSubtrackColorOnUi on
 	bigDataUrl https://raw.githubusercontent.com/ciernialab/Alder-ChIPseq-Tutorial/master/BigWigs/SRR6326801.bw
 	shortLabel HDAC1&2KO H3K27ac repl3
 	longLabel HDAC1&2KO H3K27ac repl3
-	parent HDAC12KO_H3K27ac
+	parent HDAC1&2KO_H3K27ac
 	color 34,58,240
 	viewLimits 0:1000
 	type bigWig
