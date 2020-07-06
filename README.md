@@ -542,7 +542,7 @@ There are two important parameters to consider during normalization of data.  Fi
     sbatch UCSCBrowserHOMER.sh
 
 
-We then have to fix the chromosome names to include "chr" and change the MT chromosome to M.
+We then have to fix the chromosome names to include "chr" and change the MT chromosome to M. 
 
 	sbatch FormatUCSC.sh
 
@@ -550,9 +550,11 @@ We then have to fix the chromosome names to include "chr" and change the MT chro
 The bedGraph.gz files then then be loaded one at a time as custom tracks onto the UCSC genome browser. You can save the session and then look at them again later. However, this is very slow as you have to load each final individually. Instead, we can create a track hub, where all of our files can be loaded as a custom hub. <br/>
 
 ## Step 4B. UCSC Genome Browser My Hub
-We first have to convert our bedGraph and peak bed files into compressed formats: bigwig and bigBed. We can so this using bedtools.<br/>
+We first have to convert our bedGraph and peak bed files into compressed formats: bigwig and bigBed. We can so this using the UCSC genome browser utilities. These tools are already installed in /alder/data/cbh/ciernia-data/pipeline-tools/UCSC/ using rsync -aP rsync://hgdownload.soe.ucsc.edu/genome/admin/exe/linux.x86_64/ ./ <br/>
+The path was added to the bash_profile: PATH=$PATH:/alder/data/cbh/ciernia-data/pipeline-tools/UCSC and so the tools can be called by name. We also need the chromosome sizes for mm10. This can be retrieved from UCSC with: wget http://hgdownload.cse.ucsc.edu/goldenPath/mm10/bigZips/mm10.chrom.sizes <br/>
+A copy of this file is in /alder/data/cbh/ciernia-data/pipeline-tools/UCSC/ and can be called using $mm10chrsizes
 
-	Add script here for bigwig and bigbed conversion
+	BedGraph_to_BigWig.sh
 
 Now that we have our compressed files we can setup our track hub:<br/>
 Track hubs require a webserver to host the files. We can use github to host all files < 25MB. Github supports byte-range access to files when they are accessed via the raw.githubusercontent.com style URLs. To obtain a raw URL to a file already uploaded on Github, click on a file in your repository and click the Raw button. The bigDataUrl field (and any other statement pointing to a URL like bigDataIndex, refUrl, barChartMatrixUrl, etc.) of your trackDb.txt file should use the "raw.githubusercontent.com" style URL. <br/> https://genome.ucsc.edu/goldenPath/help/hgTrackHubHelp.html <br/>
