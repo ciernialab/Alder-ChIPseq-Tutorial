@@ -46,6 +46,13 @@ PATH=$PATH:/alder/data/cbh/ciernia-data/pipeline-tools/.//bin/
 export BL=/alder/data/cbh/ciernia-data/blacklist
 #run with $BL/mm10.blacklist.bed
 
+#UCSC genome browser tools:
+PATH=$PATH:/alder/data/cbh/ciernia-data/pipeline-tools/UCSC/
+
+#mm10 chromosome sizes
+export mm10chrsizes=/alder/data/cbh/ciernia-data/pipeline-tools/UCSC/mm10.chrom.sizes
+#run with $mm10chrsizes
+
 
 export PATH
  
