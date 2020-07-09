@@ -382,7 +382,7 @@ This will start the R program environment. In R, install DESeq2 using bioconduct
 
     BiocManager::install("DESeq2")
     
-This will install DESeq2 and all the dependencies. If asked to update any packages put "y". After the installation complete, exit. using "quite". You do not need to save the workspace ("n").  <br/>
+This will install DESeq2 and all the dependencies. If asked to update any packages put "y". After the installation is complete, you can exit R using "quit()" or "q()". You do not need to save the workspace ("n").  <br/>
 
 ## Approach #1: getDifferentialPeaksReplicates.pl
 When identifying differential peaks between separate experiments, the program offers a way to include both the "background" ChIP-seq experiments as well as the input experiment by specifying them with either "-b" or "-i". The key difference between "-i" and "-b" directories is that the input directories ("-i") are used during the initial peak finding as controls to limit the feature detection and during the differential calculations with DESeq2, while the "-b" directories are used only during the differential calculations with DESeq2.  If both are specified (both -b and -i), the input directories are used during feature selection and the background directories are used during the differential calculation.  In general, if you have input experiments, you should use them with "-i". <br/>
