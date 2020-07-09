@@ -536,15 +536,10 @@ The "-o auto" with make the program automatically generate an output file name (
 
 To visualize the experiment in the UCSC Genome Browser, go to Genome Browser page and select the appropriate genome (i.e. the genome that the sequencing tags were mapped to).  Then click on the "add custom tracks" button (this will read "manage custom tracks" once at least one custom track is loaded).  Enter the file created earlier in the "Paste URLs or data" section and click "Submit".<br/> 
 
-There are two important parameters to consider during normalization of data.  First, the total read depth of the experiment is important, which is obvious.  The 2nd factor to consider is the length of the reads (this is new to v4.4).  The problem is that if an experiment has longer fragment lengths, it will generate additional coverage than an experiment with shorter fragment lengths.  In order to make sure there total area under the curve is the same for each experiment, experiments are normalized to a fixed number of reads as well as a 100 bp fragment length.  If reads are longer than 100 bp, they are 'down-normalized' a fractional amount such that they produce the same relative coverage of a 100 bp fragment length.  Experiments with shorter fragment lengths are 'up-normalized' a proportional amount (maximum of 4x or 25 bp).  This allows experiments with different fragment lengths to be comparable along the genome browser.<br/> Normalize the total number of reads to this number, default 1e7.  This means that tags from an experiment with only 5 million mapped tags will count for 2 tags apiece.
+There are two important parameters to consider during normalization of data.  First, the total read depth of the experiment is important, which is obvious.  The 2nd factor to consider is the length of the reads (this is new to v4.4).  The problem is that if an experiment has longer fragment lengths, it will generate additional coverage than an experiment with shorter fragment lengths.  In order to make sure there total area under the curve is the same for each experiment, experiments are normalized to a fixed number of reads as well as a 100 bp fragment length.  If reads are longer than 100 bp, they are 'down-normalized' a fractional amount such that they produce the same relative coverage of a 100 bp fragment length.  Experiments with shorter fragment lengths are 'up-normalized' a proportional amount (maximum of 4x or 25 bp).  This allows experiments with different fragment lengths to be comparable along the genome browser.<br/> Normalize the total number of reads to this number, default 1e7.  This means that tags from an experiment with only 5 million mapped tags will count for 2 tags apiece. This script also fixes the chromosome names to include "chr" and change the MT chromosome to M. It also makes bigwig files needed for making a browser hub described below.
 
 
     sbatch UCSCBrowserHOMER.sh
-
-
-We then have to fix the chromosome names to include "chr" and change the MT chromosome to M. 
-
-	sbatch FormatUCSC.sh
 
 
 The bedGraph.gz files then then be loaded one at a time as custom tracks onto the UCSC genome browser. You can save the session and then look at them again later. However, this is very slow as you have to load each final individually. Instead, we can create a track hub, where all of our files can be loaded as a custom hub. <br/>
@@ -552,9 +547,7 @@ The bedGraph.gz files then then be loaded one at a time as custom tracks onto th
 ## Step 4B. UCSC Genome Browser My Hub
 We first have to convert our bedGraph and peak bed files into compressed formats: bigwig and bigBed. We can so this using the UCSC genome browser utilities. These tools are already installed in /alder/data/cbh/ciernia-data/pipeline-tools/UCSC/ using rsync -aP rsync://hgdownload.soe.ucsc.edu/genome/admin/exe/linux.x86_64/ ./ <br/>
 The path was added to the bash_profile: PATH=$PATH:/alder/data/cbh/ciernia-data/pipeline-tools/UCSC and so the tools can be called by name. We also need the chromosome sizes for mm10. This can be retrieved from UCSC with: wget http://hgdownload.cse.ucsc.edu/goldenPath/mm10/bigZips/mm10.chrom.sizes <br/>
-A copy of this file is in /alder/data/cbh/ciernia-data/pipeline-tools/UCSC/ and can be called using $mm10chrsizes
-
-	BedGraph_to_BigWig.sh
+A copy of this file is in /alder/data/cbh/ciernia-data/pipeline-tools/UCSC/ and can be called using $mm10chrsizes. This was all done using the UCSCBrowserHOMER.sh script run in Step 4A.
 
 Now that we have our compressed files we can setup our track hub:<br/>
 Track hubs require a webserver to host the files. We can use github to host all files < 25MB. Github supports byte-range access to files when they are accessed via the raw.githubusercontent.com style URLs. To obtain a raw URL to a file already uploaded on Github, click on a file in your repository and click the Raw button. The bigDataUrl field (and any other statement pointing to a URL like bigDataIndex, refUrl, barChartMatrixUrl, etc.) of your trackDb.txt file should use the "raw.githubusercontent.com" style URL. <br/> https://genome.ucsc.edu/goldenPath/help/hgTrackHubHelp.html <br/>
@@ -576,7 +569,7 @@ This simple workflow uses the venn.txt output from HOMER's mergePeaks command to
 
 In this example, the venn.txt file would have been created by using a HOMER command such as this:
 
-		mergePeaks homer_regions/HomerpeaksGosselin_H3K27ac_WT.bed homer_regions/HomerpeaksGosselin_H3K27ac_HDAC1_2KO.bed homer_regions/HomerpeaksWendlen_H3K27ac_WT.bed homer_regions/HomerpeaksWendlen_H3K27ac_HDAC1_2KO.bed -prefix mergepeaks -venn homer_regions/venn.H3K27ac.txt -matrix homer_regions/matrix.H3K27ac.txt
+	mergePeaks homer_regions/HomerpeaksGosselin_H3K27ac_WT.bed homer_regions/HomerpeaksGosselin_H3K27ac_HDAC1_2KO.bed homer_regions/HomerpeaksWendlen_H3K27ac_WT.bed homer_regions/HomerpeaksWendlen_H3K27ac_HDAC1_2KO.bed -prefix mergepeaks -venn homer_regions/venn.H3K27ac.txt -matrix homer_regions/matrix.H3K27ac.txt
 
 
 Pass the venn.H3K27ac.txt file to the multi_peaks_UpSet_plot.R script like this:
