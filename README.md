@@ -1,5 +1,5 @@
 <div>
-<font size = "16">Alder-ChIPseq-Tutorial </font>
+<font size =16>Alder-ChIPseq-Tutorial </font>
 </div>
 <br>
 Tutorial for processing ChIP-seq PE files
