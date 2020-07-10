@@ -1,13 +1,13 @@
-<div>
-<font size =16>Alder-ChIPseq-Tutorial </font>
-</div>
-<br>
+
+# Alder-ChIPseq-Tutorial
+
 Tutorial for processing ChIP-seq PE files
 
 This tutorial is for downloading published PE ChIPSeq files from GEO and processing them for QC, aligning, peak calling and differential analysis.  The tutorial is setup to run on the DMCBH Alder computing cluster using bash scripts.
 
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
+- [Alder-ChIPseq-Tutorial](#alder-chipseq-tutorial)
 - [1. Getting Setup on Alder: Making a bash_profile](#1-getting-setup-on-alder-making-a-bashprofile)
 - [2. Getting Setup on Alder: Configuring SRA Toolkit](#2-getting-setup-on-alder-configuring-sra-toolkit)
 - [3. Getting Setup on Alder: Getting Genome Indexes](#3-getting-setup-on-alder-getting-genome-indexes)
