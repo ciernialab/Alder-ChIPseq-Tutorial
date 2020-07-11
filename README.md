@@ -8,7 +8,7 @@ This tutorial is for downloading published PE ChIPSeq files from GEO and process
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
 - [Alder-ChIPseq-Tutorial](#alder-chipseq-tutorial)
-- [1. Getting Setup on Alder: Making a bash_profile](#1-getting-setup-on-alder-making-a-bashprofile)
+- [1. Getting Setup on Alder: Making a bash_profile](#1-getting-setup-on-alder-making-a-bash_profile)
 - [2. Getting Setup on Alder: Configuring SRA Toolkit](#2-getting-setup-on-alder-configuring-sra-toolkit)
 - [3. Getting Setup on Alder: Getting Genome Indexes](#3-getting-setup-on-alder-getting-genome-indexes)
 - [4. Getting Setup on Alder: Installing Python Programs & HOMER](#4-getting-setup-on-alder-installing-python-programs-homer)
@@ -23,7 +23,7 @@ This tutorial is for downloading published PE ChIPSeq files from GEO and process
 - [7. Trimming fastq files](#7-trimming-fastq-files)
 - [8. Repeat QC on post trim files](#8-repeat-qc-on-post-trim-files)
 - [9. QC of the Fastq Files: Contamination Screening](#9-qc-of-the-fastq-files-contamination-screening)
-	- [setup of the Fastq_screen indexes (bowtie2)](#setup-of-the-fastqscreen-indexes-bowtie2)
+	- [setup of the Fastq_screen indexes (bowtie2)](#setup-of-the-fastq_screen-indexes-bowtie2)
 - [10. Align to mm10 genome using Bowtie2](#10-align-to-mm10-genome-using-bowtie2)
 - [11. Filter aligned files](#11-filter-aligned-files)
 - [12. QC with Deeptools:](#12-qc-with-deeptools)
