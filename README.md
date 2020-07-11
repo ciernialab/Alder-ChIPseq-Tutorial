@@ -49,7 +49,7 @@ This tutorial is for downloading published PE ChIPSeq files from GEO and process
 			- [Step 5: Look at overlapping peaks with Upset plots](#step-5-look-at-overlapping-peaks-with-upset-plots)
 			- [Step 6: Identifiy differential peaks statistically](#step-6-identifiy-differential-peaks-statistically)
 				- [Considerations:](#considerations)
-					- [Variance Stabilization/Normalized Read counts in output file: http://homer.ucsd.edu/homer/ngs/diffExpression.html](#variance-stabilizationnormalized-read-counts-in-output-file-httphomerucsdeduhomerngsdiffexpressionhtml)
+					- [Variance Stabilization/Normalized Read counts in output file:](#variance-stabilizationnormalized-read-counts-in-output-file)
 					- [Normalization to Tag directory or gene totals](#normalization-to-tag-directory-or-gene-totals)
 			- [Step 7: look at DE peaks on UCSC genome browser and see if they are reasonable](#step-7-look-at-de-peaks-on-ucsc-genome-browser-and-see-if-they-are-reasonable)
 			- [Step 8: Make Deeplots heatmap and profile over DE peaks](#step-8-make-deeplots-heatmap-and-profile-over-de-peaks)
@@ -684,7 +684,11 @@ getDiffExpression.pl <raw count file> <group code1> <group code2> [group code3..
 Provide sample group annotation for each experiment with an argument on the command line (in the same order found in the file, i.e. the same order given to the annotatePeaks.pl command when preparing the raw count file).<br/>
 
 #####  Considerations:
-###### Variance Stabilization/Normalized Read counts in output file: http://homer.ucsd.edu/homer/ngs/diffExpression.html
+###### Variance Stabilization/Normalized Read counts in output file:
+
+http://homer.ucsd.edu/homer/ngs/diffExpression.html
+
+
 By default, getDiffExpression.pl will perform a variance stabilization transform on your raw count data so that viewing the data is easier after the command is finished.  The idea behind variance stabilization is to "transform" the data such that variance in the read counts is relatively constant as a function of intensity.  This limits the "flare" of low expression variance that you normally see in log-transformed scatter plots when comparing one experiment versus another. By default the program will use DESeq2's rlog transform to create nicely normalized log2 read counts ("-rlog"). The program also supports DESeq2's VST transform (option "-vst"), which is faster and may be recommended if you are processing a lot of samples. In both cases the tranforms will be conducted with the design matrix specifying which samples are replicates (or paired in the batch definition). If you prefer read counts that are simply normalized to the total count in the raw count matrix, specify "-simpleNorm", or "-raw" to keep the data the same as the input data.<br/>
 
 IMPORTANT NOTE: The rlog and vst transforms may have problems if there are no replicates or too few samples (i.e. only 2), so in these cases it is recommended to use "-simpleNorm" or "-raw".<br/>
