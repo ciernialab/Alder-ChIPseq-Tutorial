@@ -624,6 +624,18 @@ This pipeline performs HOMER mergePeaks on a large amount of paired BED files, t
 
 This simple workflow uses the venn.txt output from HOMER's mergePeaks command to visualize the overlaps between different sets of peaks (such as .bed files from a ChIP-Seq experiment), using the UpSetR package for R version 3.3.0.
 
+If you don't have UpSetR installed, you'll need to install it onto the server using the following commands:
+	
+	module load R 
+	R 
+	install.packages("UpSetR") #install the package
+	
+	#If it asks you to pick a mirror, it doesn't really matter. 
+	#Try to pick one close (maybe a Canadian or USA one?) and enter the number
+	
+	q() #quit R
+	
+
 In this example, the venn.txt file would have been created by using a HOMER command such as this:
 
 	mergePeaks homer_regions/HomerpeaksGosselin_H3K27ac_WT.bed homer_regions/HomerpeaksGosselin_H3K27ac_HDAC1_2KO.bed homer_regions/HomerpeaksWendlen_H3K27ac_WT.bed homer_regions/HomerpeaksWendlen_H3K27ac_HDAC1_2KO.bed -prefix mergepeaks -venn homer_regions/venn.H3K27ac.txt -matrix homer_regions/matrix.H3K27ac.txt
