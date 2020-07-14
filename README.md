@@ -644,14 +644,14 @@ In this example, the venn.txt file would have been created by using a HOMER comm
 Pass the venn.H3K27ac.txt file to the multi_peaks_UpSet_plot.R script like this:
 
 
-	Rscript --vanilla multi_peaks_UpSet_plot.R "SampleID" homer_regions/venn.H3K27ac.txt
+	Rscript --vanilla multi_peaks_UpSet_plot.R "H3K27ac" homer_regions/venn.H3K27ac.txt
 
 The plot is saved to the same directory as the venn.H3K27ac.txt file. Repeat for H3K9ac.
 
 	mergePeaks homer_regions/HomerpeaksGosselin_H3K9ac_WT.bed homer_regions/HomerpeaksGosselin_H3K9ac_HDAC1_2KO.bed homer_regions/HomerpeaksWendlen_H3K9ac_WT.bed homer_regions/HomerpeaksWendlen_H3K9ac_HDAC1_2KO.bed -prefix mergepeaks -venn homer_regions/venn.H3K9ac.txt -matrix homer_regions/matrix.H3K9ac.txt
 
 
-	Rscript --vanilla multi_peaks_UpSet_plot.R "SampleID" homer_regions/venn.H3K9ac.txt
+	Rscript --vanilla multi_peaks_UpSet_plot.R "H3K9ac" homer_regions/venn.H3K9ac.txt
 
 #### Step 6: Identifiy differential peaks statistically
 Run the following script:
