@@ -17,6 +17,32 @@ module load R/3.6.1
 ########################################################################################
 #H3K27ac Wendlen
 #######################################################################################
+mkdir homer_regions/
+#HDAC1/2KO MG:
+#SRR6326785
+#SRR6326800
+#SRR6326801
+
+makeTagDirectory TagDirectory/Pooltag_H3K27ac_HDAC12KO aligned/SRR6326785_dedup.bam aligned/SRR6326800_dedup.bam aligned/SRR6326801_dedup.bam
+
+#SRR6326787	input
+#SRR6326789	input
+
+makeTagDirectory TagDirectory/Pooltag_input_HDAC1_2KO aligned/SRR6326787_dedup.bam aligned/SRR6326789_dedup.bam
+
+#SRR6326796	H3K27ac
+#SRR6326798	H3K27ac
+
+makeTagDirectory TagDirectory/Pooltag_H3K27ac_WT aligned/SRR6326796_dedup.bam aligned/SRR6326798_dedup.bam
+
+#SRR6326791	input	wildtype
+#SRR6326793	input	wildtype
+#SRR6326795	input	wildtype
+#SRR6326797	input	wildtype
+#SRR6326799	input	wildtype
+
+makeTagDirectory TagDirectory/Pooltag_input_WT aligned/SRR6326791_dedup.bam aligned/SRR6326793_dedup.bam aligned/SRR6326795_dedup.bam aligned/SRR6326797_dedup.bam aligned/SRR6326799_dedup.bam
+#######################################################################################
 #HDAC1/2KO:
 findPeaks TagDirectory/Pooltag_H3K27ac_HDAC12KO -style histone -size 250 -i TagDirectory/Pooltag_input_HDAC1_2KO -o homer_regions/HomerpeaksWendlen_H3K27ac_HDAC1_2KO.txt
 
