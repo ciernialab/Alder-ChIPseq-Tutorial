@@ -726,7 +726,7 @@ We will next examine the ouput of getDiffExpression.pl. If you open the DiffPeak
 Wendlen.H3K27ac:<br/>
 Using DESeq2 to calculate differential expression/enrichment...<br/>
         Output Stats Hdac12KO vs. WT:<br/>
-                Total Genes: 472236<br/>
+                Total Genes: 472732<br/>
                 Total Up-regulated in WT vs. Hdac12KO: 0 (0.000%) [log2fold>1, FDR<0.05]<br/>
                 Total Dn-regulated in WT vs. Hdac12KO: 1 (0.000%) [log2fold<-1, FDR<0.05]<br/>
 
@@ -734,23 +734,23 @@ Using DESeq2 to calculate differential expression/enrichment...<br/>
 Gosselin.H3K27ac:<br/>
 Using DESeq2 to calculate differential expression/enrichment...<br/>
         Output Stats Hdac12KO vs. WT:<br/>
-                Total Genes: 221433<br/>
+                Total Genes: 222080<br/>
                 Total Up-regulated in WT vs. Hdac12KO: 0 (0.000%) [log2fold>1, FDR<0.05]<br/>
                 Total Dn-regulated in WT vs. Hdac12KO: 1 (0.000%) [log2fold<-1, FDR<0.05]<br/>
 
 Wendlen.H3K9ac:<br/>
 Using DESeq2 to calculate differential expression/enrichment...<br/>
         Output Stats Hdac12KO vs. WT:<br/>
-                Total Genes: 475806<br/>
-                Total Up-regulated in WT vs. Hdac12KO: 297 (0.062%) [log2fold>1, FDR<0.05]<br/>
-                Total Dn-regulated in WT vs. Hdac12KO: 1072 (0.225%) [log2fold<-1, FDR<0.05]<br/>
+                Total Genes: 476479<br/>
+                Total Up-regulated in WT vs. Hdac12KO: 286 (0.060%) [log2fold>1, FDR<0.05]<br/>
+                Total Dn-regulated in WT vs. Hdac12KO: 1063 (0.223%) [log2fold<-1, FDR<0.05]<br/>
 
 Gosselin.H3K9ac:<br/>
 Using DESeq2 to calculate differential expression/enrichment...<br/>
         Output Stats Hdac12KO vs. WT:<br/>
-                Total Genes: 228263<br/>
-                Total Up-regulated in WT vs. Hdac12KO: 852 (0.373%) [log2fold>1, FDR<0.05]<br/>
-                Total Dn-regulated in WT vs. Hdac12KO: 2678 (1.173%) [log2fold<-1, FDR<0.05]<br/>
+                Total Genes: 228510<br/>
+                Total Up-regulated in WT vs. Hdac12KO: 862 (0.377%) [log2fold>1, FDR<0.05]<br/>
+                Total Dn-regulated in WT vs. Hdac12KO: 2673 (1.170%) [log2fold<-1, FDR<0.05]<br/>
 
 So it looks like more differences bewteen HDAC1/2KO and WT for H3K9ac regardless of the peak settings.The Gosselin peaks show more differential peaks, which is potentially expected as the peaks are larger. <br/>
 
