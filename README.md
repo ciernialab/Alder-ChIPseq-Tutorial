@@ -56,6 +56,9 @@ This tutorial is for downloading published PE ChIPSeq files from GEO and process
 
 <!-- /TOC -->
 
+![ChIPseq1](ChIPseq1.png)
+![ChIPseq2](ChIPseq2.png)
+
 # 1. Getting Setup on Alder: Making a bash_profile
   - Go to your home directory: cd ~/
   - Open a text editor and make/edit your .bash_profile
