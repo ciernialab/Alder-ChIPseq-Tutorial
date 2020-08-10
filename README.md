@@ -201,6 +201,9 @@ It should say that the job SRAfetch is running
 If you check the contents of the experiment folder, SRAfetch.out should have also been generated. Look inside this file (even while it is still running) to check the progress of the script. The sript prints when a samples starts, progress, and ends. SRAfetch.out also serves as a log to check for errors, etc. This is one of the main advantages of sbatch - the log!
 
     less SRAfetch.out
+    
+ SRRpull.sh also runs a check on the .sra files to makes sure they were copied over completely. This is stored in output/SRA_checksum/SRAcheck.log <br/>
+ # YOU MUST CHECK THIS LOOK TO MAKE SURE ALL FILES HAVE 'OK' AND "Database 'SRRNAME.sra' is consistent" LISTED. IF YOU HAVE ANY ERRORS RERUN. 
 
 # 6. QC of the Fastq Files
 We need to check the quality of the fastq files both before and after trimming. We use FastQC from https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
