@@ -754,16 +754,17 @@ Plot 1kb upstream and 500bp downstream of each TSS in mm10. Plots profiles (mean
     sbatch Geneplots_deeptools.sh
 
 ## 2. DE Peaks Heatmap Plots
-Plot Normalized signal over each set of DE peaks with computeMatrix, plotHeatmap and plotProfile. You first need to convert the _diffpeaksOutput.txt files from the getDiffExpression.pl script to bed files. This requires making some formtting changes, sorting and filtering for significant peaks using unix commands. A detailed description of each step is found within the script. <br/>
+Plot Normalized signal over each set of DE peaks with computeMatrix, plotHeatmap and plotProfile. You first need to convert the _diffpeaksOutput.txt files from the getDiffExpression.pl script to bed files. This requires making some formtting changes, sorting and filtering for significant peaks using unix commands. A detailed description of each step is found within the script. This script produces an output bed file for regions that pass an FDR<0.05. <br/>
 
-	sbatch Geneplots_deeptools.sh
+	sbatch Convert_DEpeaks_to_bed.sh
 
 Plot 500bp upstream and 500bp downstream of each DE region. Plots profiles (mean) and heatmap (each row is a differential region). https://deeptools.readthedocs.io/en/develop/content/tools/computeMatrix.html
 
 
-    sbatch Geneplots_deeptools.sh
+    sbatch DEpeaks_Deeptool_Plots.sh
 
 
+NOTE: There are very few regions that pass FDR < 0.05. Try repeating the DE Peaks Heatmaps with relaxed cutoffs. FDR < 0.1 or the top 100 ranked regions. 
 
 
 
