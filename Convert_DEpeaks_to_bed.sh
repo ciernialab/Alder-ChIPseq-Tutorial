@@ -13,9 +13,9 @@
 # awk is a unix tool for text processing. It parses files (like most unix tools) on a per line basis,
 # which can makes it very useful.
 # We can use the following command (which prints the number of columns/fields for each row/line, and only prints
-# out the unique values so we don't the output for all rows):
+# out the unique values so we don't get the output for all rows):
 
-# awk '{print }' <filename> | uniq
+# awk '{print NF}' Wendlen.H3K27ac_diffpeaksOutput.txt | uniq
 
 # to see that there are 2 unique column values. The header has 147 columns, and the rest of the file has 19.
 # Since the field we want to filter by (the adjusted p-values) is the last column,
@@ -24,7 +24,7 @@
 # Now, the NF variable (which means Number of Fields) can also be used to denote the last field.
 
 # So there's a few ways we can sort. One way is to use NF:
-# awk '{ if($NF<0.05) {print}}'  ---> this runs a conditional based on the last field FOR each row, so the
+# awk '{if($NF<0.05) {print}}'  ---> this runs a conditional based on the last field FOR EACH row, so the
 # filtering will still work, since the field we want to filter (adjusted p values) is the last one
 
 # we could also do awk '{if($19<=0.05) {print}}', which runs a conditional based on the 19th column.
