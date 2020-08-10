@@ -359,22 +359,6 @@ An ideal [input][] with perfect uniform distribution of reads along the genome (
 
     sbatch FingerPrint.sh
 
-
-## 6. Convert to Read Depth Normalized BigWigs
-Use BamCoverage to convert BAM to bigWig (or bedGraph for that matter), with normalization, such that different samples can be compared despite differences in their sequencing depth. The effective genome size is set for mappable part of mm10. It makes a normalized bigwig file for each SRR. Blacklist regions are excluded and reads are extended and centered. Averages in 10bp bins across the genome.
-
-    sbatch BamCoverageDeeptools.sh
-
-
-## 7. TSS Heatmap Plots
-Plot Normalized signal over the TSS with computeMatrix, plotHeatmap and plotProfile. You first need the coordinates of all the mm10 genes in bed format. To get these go to the UCSC genome browser and select mm10. Go to the table browser and download a bed file for the gene body. Load the bed file into your experiment folder on Alder.<br/>
-
-Compute a coverage matrix for each bed file genes from your normalized bigwig files and then plot.https://deeptools.readthedocs.io/en/develop/content/tools/computeMatrix.html
-
-
-    sbatch Geneplots_deeptools.sh
-
-
 # 13. Peak Calling with HOMER
 Up until this point the pipeline is relatively standard for all PE ChIPseq experiments. The choice of peak callers and settings depends on what type of ChIP experiment you are performing (ie. histone marks vs. transcription factors). This dataset was for H3K27ac and H3K9ac, both classic histone acetylation marks that are analyzed nicely with HOMER using -style histone and some custom settings based on knowledge of how these two marks behave. If you are working with other ChIP datasets where the marks are either more or less peak like you need to make adjustments to the HOMER calls. See http://homer.ucsd.edu/homer/ngs/peaks.html for details.
 
@@ -759,4 +743,30 @@ So it looks like more differences bewteen HDAC1/2KO and WT for H3K9ac regardless
 
 We can open the DE peak files  and look at several top regions the UCSC genome browser. Do they look different?
 
-#### Step 8: Make Deeplots heatmap and profile over DE peaks
+#### Step 8: Make Deeplots heatmap and profile over TSS and DE peaks
+These plots use Deeptools computeMatrix, plotHeatmap and plotProfile to plot the average signal over specific regions specified in a bed file.  We will be using the read-depth normalized bigwig files generated from running the UCSCBrowserHOMER.sh script. 
+
+## 1. TSS Heatmap Plots
+Plot Normalized signal over the TSS with computeMatrix, plotHeatmap and plotProfile. You first need the coordinates of all the mm10 genes in bed format. To get these go to the UCSC genome browser and select mm10. Go to the table browser and download a bed file for the gene body. Load the bed file into your experiment folder on Alder or use the one already available: mm10.refseq.bed<br/>
+Plot 1kb upstream and 500bp downstream of each TSS in mm10. Plots profiles (mean) and heatmap (each row is a gene in teh mm10.refseq.bed). https://deeptools.readthedocs.io/en/develop/content/tools/computeMatrix.html
+
+
+    sbatch Geneplots_deeptools.sh
+
+## 2. DE Peaks Heatmap Plots
+Plot Normalized signal over each set of DE peaks with computeMatrix, plotHeatmap and plotProfile. You first need to convert the _diffpeaksOutput.txt files from the getDiffExpression.pl script to bed files. This requires making some formtting changes, sorting and filtering for significant peaks using unix commands. A detailed description of each step is found within the script. <br/>
+
+	sbatch Geneplots_deeptools.sh
+
+Plot 500bp upstream and 500bp downstream of each DE region. Plots profiles (mean) and heatmap (each row is a differential region). https://deeptools.readthedocs.io/en/develop/content/tools/computeMatrix.html
+
+
+    sbatch Geneplots_deeptools.sh
+
+
+
+
+
+
+
+
