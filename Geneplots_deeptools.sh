@@ -12,7 +12,7 @@
 ########################################################################################
 #H3K27ac
 ##########################################################################################
-computeMatrix reference-point --referencePoint TSS -b 1000 -a 500 -R mm10.refseq.bed -S BigWigs/SRR6326785.bw BigWigs/SRR6326800.bw BigWigs/SRR6326801.bw BigWigs/SRR6326796.bw BigWigs/SRR6326798.bw BigWigs/SRR6326787.bw BigWigs/SRR6326789.bw BigWigs/SRR6326791.bw BigWigs/SRR6326793.bw BigWigs/SRR6326795.bw BigWigs/SRR6326797.bw BigWigs/SRR6326799.bw -p 20 -o Deeptools/mouseTSS.H3K27ac.tab.gz --skipZeros --binSize 10 --outFileSortedRegions Deeptools/H3K27acTSS_out.bed 
+computeMatrix reference-point --referencePoint TSS -b 1000 -a 500 -R mm10.refseq.bed -S UCSCbrowsertracks/HDAC12KO_H3K27ac_Repl1.bw UCSCbrowsertracks/HDAC12KO_H3K27ac_Repl2.bw UCSCbrowsertracks/HDAC12KO_H3K27ac_Repl3.bw UCSCbrowsertracks/WT_H3K27ac_Repl1.bw UCSCbrowsertracks/WT_H3K27ac_Repl2.bw UCSCbrowsertracks/HDAC12KO_Input_Repl1.bw UCSCbrowsertracks/HDAC12KO_Input_Repl2.bw UCSCbrowsertracks/WT_Input_Repl1.bw UCSCbrowsertracks/WT_Input_Repl2.bw UCSCbrowsertracks/WT_Input_Repl3.bw UCSCbrowsertracks/WT_Input_Repl4.bw UCSCbrowsertracks/WT_Input_Repl5.bw -p 20 -o Deeptools/mouseTSS.H3K27ac.tab.gz --skipZeros --binSize 10 --outFileSortedRegions Deeptools/H3K27acTSS_out.bed 
 
 # plot
 plotProfile -m Deeptools/mouseTSS.H3K27ac.tab.gz  --numPlotsPerRow 2 --regionsLabel "Mouse RefSeq Genes" --plotFileFormat "pdf" -out Deeptools/profile_H3K27ac.pdf --averageType mean --samplesLabel "KO" "KO" "KO" "WT" "WT" "KOInput" "KOInput" "WTInput" "WTInput" "WTInput" "WTInput" "WTInput" 
@@ -26,7 +26,7 @@ plotHeatmap -m Deeptools/mouseTSS.H3K27ac.tab.gz --regionsLabel "Mouse Refeq Gen
 ########################################################################################
 #H3K9ac
 ##########################################################################################
-computeMatrix reference-point --referencePoint TSS -b 1000 -a 500 -R mm10.refseq.bed -S BigWigs/SRR6326786.bw BigWigs/SRR6326788.bw BigWigs/SRR6326790.bw BigWigs/SRR6326792.bw BigWigs/SRR6326794.bw BigWigs/SRR6326787.bw BigWigs/SRR6326789.bw BigWigs/SRR6326791.bw BigWigs/SRR6326793.bw BigWigs/SRR6326795.bw BigWigs/SRR6326797.bw BigWigs/SRR6326799.bw -p 20 -o Deeptools/mouseTSS.H3K9ac.tab.gz --skipZeros --binSize 10 --outFileSortedRegions Deeptools/H3K9acTSS_out.bed 
+computeMatrix reference-point --referencePoint TSS -b 1000 -a 500 -R mm10.refseq.bed -S UCSCbrowsertracks/HDAC12KO_H3K27ac_Repl1.bw UCSCbrowsertracks/HDAC12KO_H3K27ac_Repl2.bw UCSCbrowsertracks/HDAC12KO_H3K27ac_Repl3.bw UCSCbrowsertracks/WT_H3K27ac_Repl1.bw UCSCbrowsertracks/WT_H3K27ac_Repl2.bw UCSCbrowsertracks/HDAC12KO_Input_Repl1.bw UCSCbrowsertracks/HDAC12KO_Input_Repl2.bw UCSCbrowsertracks/WT_Input_Repl1.bw UCSCbrowsertracks/WT_Input_Repl2.bw UCSCbrowsertracks/WT_Input_Repl3.bw UCSCbrowsertracks/WT_Input_Repl4.bw UCSCbrowsertracks/WT_Input_Repl5.bw -p 20 -o Deeptools/mouseTSS.H3K9ac.tab.gz --skipZeros --binSize 10 --outFileSortedRegions Deeptools/H3K9acTSS_out.bed 
 
 # plot
 plotProfile -m Deeptools/mouseTSS.H3K9ac.tab.gz  --numPlotsPerRow 2 --regionsLabel "Mouse RefSeq Genes" --plotFileFormat "pdf" -out Deeptools/profile_H3K9ac.pdf --averageType mean --samplesLabel "KO" "KO" "WT" "WT" "WT" "KOInput" "KOInput" "WTInput" "WTInput" "WTInput" "WTInput" "WTInput" 
