@@ -14,6 +14,7 @@
 #puts data in shared data file for the experiment
 #######################################################################################
 mkdir -p SRA/
+mkdir -p output/SRA_checksum
 
 for sample in `cat SRR_Acc_List.txt`
 do
@@ -32,5 +33,18 @@ fastq-dump --origfmt --split-files --gzip ${sample}
 
 echo ${sample} "done"
 #######################################################################################
+#validate each SRA file and save to output log
+#https://reneshbedre.github.io/blog/fqutil.html
+#######################################################################################
+
+echo ${sample} "starting sra check"
+
+vdb-validate /alder/data/cbh/ciernia-data/HDAC1_2_ChIPseq/SRA/${sample} 2> output/SRA_checksum/${sample}_SRAcheck.log
+
+echo ${sample} "done"
 
 done
+
+#combine logs into one output file
+cat output/SRA_checksum/*_SRAcheck.log > output/SRA_checksum/SRAcheck.log
+
