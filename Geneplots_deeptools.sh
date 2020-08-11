@@ -19,7 +19,7 @@ plotProfile -m Deeptools/mouseTSS.H3K27ac.tab.gz  --numPlotsPerRow 2 --regionsLa
 
 
 # with legend media ymax chosen based on initial graphs
-plotHeatmap -m Deeptools/mouseTSS.H3K27ac.tab.gz --regionsLabel "Mouse Refeq Genes" --plotFileFormat "pdf" --samplesLabel "KO" "KO" "KO" "WT" "WT" "KOInput" "KOInput" "WTInput" "WTInput" "WTInput" "WTInput" "WTInput" -out Deeptools/Heatmap.mouseTSS.H3K27ac.pdf --averageType mean --perGroup --colorMap RdBu --averageTypeSummaryPlot mean 
+plotHeatmap -m Deeptools/mouseTSS.H3K27ac.tab.gz --regionsLabel "Mouse Refeq Genes" --plotFileFormat "pdf" --samplesLabel "KO" "KO" "KO" "WT" "WT" "KOInput" "KOInput" "WTInput" "WTInput" "WTInput" "WTInput" "WTInput" -out Deeptools/Heatmap.mouseTSS.H3K27ac.pdf --averageType mean --perGroup --colorMap RdBu --averageTypeSummaryPlot mean --legendLocation upper-right --heatmapWidth 12
 
 ############################################################################################
 
@@ -33,6 +33,6 @@ plotProfile -m Deeptools/mouseTSS.H3K9ac.tab.gz  --numPlotsPerRow 2 --regionsLab
 
 
 # with legend media ymax chosen based on initial graphs
-plotHeatmap -m Deeptools/mouseTSS.H3K9ac.tab.gz --regionsLabel "Mouse Refeq Genes" --plotFileFormat "pdf" --samplesLabel "KO" "KO" "WT" "WT" "WT" "KOInput" "KOInput" "WTInput" "WTInput" "WTInput" "WTInput" "WTInput" -out Deeptools/Heatmap.mouseTSS.H3K9ac.pdf --averageType mean --perGroup --colorMap RdBu --averageTypeSummaryPlot mean 
+plotHeatmap -m Deeptools/mouseTSS.H3K9ac.tab.gz --regionsLabel "Mouse Refeq Genes" --plotFileFormat "pdf" --samplesLabel "KO" "KO" "WT" "WT" "WT" "KOInput" "KOInput" "WTInput" "WTInput" "WTInput" "WTInput" "WTInput" -out Deeptools/Heatmap.mouseTSS.H3K9ac.pdf --averageType mean --perGroup --colorMap RdBu --averageTypeSummaryPlot mean --legendLocation upper-right --heatmapWidth 12
 
 ############################################################################################
