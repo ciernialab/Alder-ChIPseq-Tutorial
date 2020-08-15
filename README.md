@@ -51,8 +51,8 @@ This tutorial is for downloading published PE ChIPSeq files from GEO and process
 					- [Normalization to Tag directory or gene totals](#normalization-to-tag-directory-or-gene-totals)
 			- [Step 7: look at DE peaks on UCSC genome browser and see if they are reasonable](#step-7-look-at-de-peaks-on-ucsc-genome-browser-and-see-if-they-are-reasonable)
 			- [Step 8: Make Deeplots heatmap and profile over TSS and DE peaks](#step-8-make-deeplots-heatmap-and-profile-over-tss-and-de-peaks)
-				- [TSS Heatmap Plots](tss-heatmap-plots)
-				- [DE Peaks Heatmap Plots](de-peaks-heatmap-plots)
+				- [TSS Heatmap Plots](#tss-heatmap-plots)
+				- [DE Peaks Heatmap Plots](#de-peaks-heatmap-plots)
 
 <!-- /TOC -->
 
