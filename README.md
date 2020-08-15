@@ -32,8 +32,6 @@ This tutorial is for downloading published PE ChIPSeq files from GEO and process
 	- [3. Check Fragment Sizes (bamPEFragmentSize)](#3-check-fragment-sizes-bampefragmentsize)
 	- [4. GC-bias check (computeGCBias) - ADD later if needed](#4-gc-bias-check-computegcbias---add-later-if-needed)
 	- [5. Assessing the ChIP strength.](#5-assessing-the-chip-strength)
-	- [6. Convert to Read Depth Normalized BigWigs](#6-convert-to-read-depth-normalized-bigwigs)
-	- [7. TSS Heatmap Plots](#7-tss-heatmap-plots)
 - [13. Peak Calling with HOMER](#13-peak-calling-with-homer)
 	- [Make Tag Directories](#make-tag-directories)
 	- [Call Peaks and Find Differential Peaks Between Conditions](#call-peaks-and-find-differential-peaks-between-conditions)
@@ -47,12 +45,14 @@ This tutorial is for downloading published PE ChIPSeq files from GEO and process
 			- [Step 4. UCSC Genome Browser Tracks (HOMER)](#step-4-ucsc-genome-browser-tracks-homer)
 			- [Step 4B. UCSC Genome Browser My Hub](#step-4b-ucsc-genome-browser-my-hub)
 			- [Step 5: Look at overlapping peaks with Upset plots](#step-5-look-at-overlapping-peaks-with-upset-plots)
-			- [Step 6: Identifiy differential peaks statistically](#step-6-identifiy-differential-peaks-statistically)
+			- [Step 6: Identify differential peaks statistically](#step-6-identify-differential-peaks-statistically)
 				- [Considerations:](#considerations)
 					- [Variance Stabilization/Normalized Read counts in output file:](#variance-stabilizationnormalized-read-counts-in-output-file)
 					- [Normalization to Tag directory or gene totals](#normalization-to-tag-directory-or-gene-totals)
 			- [Step 7: look at DE peaks on UCSC genome browser and see if they are reasonable](#step-7-look-at-de-peaks-on-ucsc-genome-browser-and-see-if-they-are-reasonable)
-			- [Step 8: Make Deeplots heatmap and profile over DE peaks](#step-8-make-deeplots-heatmap-and-profile-over-de-peaks)
+			- [Step 8: Make Deeplots heatmap and profile over TSS and DE peaks](#step-8-make-deeplots-heatmap-and-profile-over-tss-and-de-peaks)
+				- [TSS Heatmap Plots](tss-heatmap-plots)
+				- [DE Peaks Heatmap Plots](de-peaks-heatmap-plots)
 
 <!-- /TOC -->
 
@@ -203,7 +203,7 @@ If you check the contents of the experiment folder, SRAfetch.out should have als
     less SRAfetch.out
     
  SRRpull.sh also runs a check on the .sra files to makes sure they were copied over completely. This is stored in output/SRA_checksum/SRAcheck.log <br/>
- # YOU MUST CHECK THIS LOOK TO MAKE SURE ALL FILES HAVE 'OK' AND "Database 'SRRNAME.sra' is consistent" LISTED. IF YOU HAVE ANY ERRORS RERUN. 
+ ## YOU MUST CHECK THIS - LOOK TO MAKE SURE ALL FILES HAVE 'OK' AND "Database 'SRRNAME.sra' is consistent" LISTED. IF YOU HAVE ANY ERRORS, RERUN. 
 
 # 6. QC of the Fastq Files
 We need to check the quality of the fastq files both before and after trimming. We use FastQC from https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
@@ -643,7 +643,7 @@ The plot is saved to the same directory as the venn.H3K27ac.txt file. Repeat for
 
 	Rscript --vanilla multi_peaks_UpSet_plot.R "H3K9ac" homer_regions/venn.H3K9ac.txt
 
-#### Step 6: Identifiy differential peaks statistically
+#### Step 6: Identify differential peaks statistically
 Run the following script:
 
 	sbatch DifferentialPeaks.sh
@@ -749,14 +749,14 @@ We can open the DE peak files  and look at several top regions the UCSC genome b
 #### Step 8: Make Deeplots heatmap and profile over TSS and DE peaks
 These plots use Deeptools computeMatrix, plotHeatmap and plotProfile to plot the average signal over specific regions specified in a bed file.  We will be using the read-depth normalized bigwig files generated from running the UCSCBrowserHOMER.sh script. 
 
-## 1. TSS Heatmap Plots
+##### TSS Heatmap Plots
 Plot Normalized signal over the TSS with computeMatrix, plotHeatmap and plotProfile. You first need the coordinates of all the mm10 genes in bed format. To get these go to the UCSC genome browser and select mm10. Go to the table browser and download a bed file for the gene body. Load the bed file into your experiment folder on Alder or use the one already available: mm10.refseq.bed<br/>
 Plot 1kb upstream and 500bp downstream of each TSS in mm10. Plots profiles (mean) and heatmap (each row is a gene in teh mm10.refseq.bed). https://deeptools.readthedocs.io/en/develop/content/tools/computeMatrix.html
 
 
     sbatch Geneplots_deeptools.sh
 
-## 2. DE Peaks Heatmap Plots
+##### DE Peaks Heatmap Plots
 Plot Normalized signal over each set of DE peaks with computeMatrix, plotHeatmap and plotProfile. You first need to convert the _diffpeaksOutput.txt files from the getDiffExpression.pl script to bed files. This requires making some formtting changes, sorting and filtering for significant peaks using unix commands. A detailed description of each step is found within the script. This script produces an output bed file for regions that pass an FDR<0.05. <br/>
 
 	sbatch Convert_DEpeaks_to_bed.sh
