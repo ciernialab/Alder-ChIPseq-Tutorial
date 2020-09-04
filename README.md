@@ -53,6 +53,7 @@ This tutorial is for downloading published PE ChIPSeq files from GEO and process
 			- [Step 8: Make Deeplots heatmap and profile over TSS and DE peaks](#step-8-make-deeplots-heatmap-and-profile-over-tss-and-de-peaks)
 				- [TSS Heatmap Plots](#tss-heatmap-plots)
 				- [DE Peaks Heatmap Plots](#de-peaks-heatmap-plots)
+					- [Experimenting with Filtering](#experimenting-with-filtering)
 
 <!-- /TOC -->
 
@@ -600,7 +601,7 @@ Now that we have our compressed files we can setup our track hub:<br/>
 Track hubs require a webserver to host the files. We can use github to host all files < 25MB. Github supports byte-range access to files when they are accessed via the raw.githubusercontent.com style URLs. To obtain a raw URL to a file already uploaded on Github, click on a file in your repository and click the Raw button. The bigDataUrl field (and any other statement pointing to a URL like bigDataIndex, refUrl, barChartMatrixUrl, etc.) of your trackDb.txt file should use the "raw.githubusercontent.com" style URL. <br/> https://genome.ucsc.edu/goldenPath/help/hgTrackHubHelp.html <br/>
 
 Track hubs can now be specified in a single text file: http://genome.ucsc.edu/goldenPath/help/hgTracksHelp.html#UseOneFile <br/>
-Once this text file is loaded onto github, you can get the RAW url for the text file and then check your hub works by pasting the url into the hub development took and clicking "Check Hub Settings".  http://genome.ucsc.edu/cgi-bin/hgHubConnect?#hubDeveloper
+Once this text file is loaded onto github, you can get the RAW url for the text file and then check your hub works by pasting the url into the hub development tool and clicking "Check Hub Settings".  http://genome.ucsc.edu/cgi-bin/hgHubConnect?#hubDeveloper
 If your hub has no errors you can then click the "View on UCSC browser" to view your hub.<br/>
 
 We have setup a hub using the TrackHubmm10.txt file. The link to this file is: https://raw.githubusercontent.com/ciernialab/Alder-ChIPseq-Tutorial/master/TrackHubmm10.txt <br/>
@@ -780,12 +781,20 @@ It should look something like this:
 **H3K9ac Gosselin:**
 ![DEpeaks.H3K9ac.Gosselin](Heatmap.DEpeaks.H3K9ac_Gosselin.png)
 
-**H3K27ac Gosselin**
+**H3K27ac Gosselin:**
 ![DEpeaks.H3K27ac.Gosselin](Heatmap.DEpeaks.H3K27ac_Gosselin.png)
 
-NOTE: There are sometimes very few regions that pass FDR < 0.05. You can try repeating the DE Peaks Heatmaps with relaxed cutoffs, such as filtering for FDR < 0.1 or the top 100 ranked regions.
+###### Experimenting with Filtering
 
-In this experiment, H3K27ac seems to only have 1 peak that passes FDR filtering (this was true even for FDR < 0.15), which explains why the heatmap looks distorted. In cases like this, you could also try filtering by the non-adjusted p value instead of the FDR corrected value. You can do this by filtering manually on excel and changing the file extension to a bed file, or you can use the unix tool awk, as was done previously in the Convert_DEpeaks_to_bed.sh script.
+NOTE: There are sometimes very few regions that pass FDR < 0.05. You can try repeating the DE Peaks Heatmaps with relaxed cutoffs, such as filtering for FDR <= 0.1, or the top 100 ranked regions.
+
+You can change the filtering manually by opening up the text file on excel, or you can change the awk command in the Convert_DEpeaks_to_bed.sh script, e.g.
+
+		awk '{if($19<=0.1) {print}}'
+
+and then running the DEpeaks_Deeptool_Plots.sh script with the new files generated.
+
+In this experiment however, H3K27ac seems to only have 1 peak that passes FDR filtering (this is true even for FDR <= 0.15), which explains why the heatmap looks distorted. In cases like this, you could also try filtering by the non-adjusted p value instead of the FDR corrected value. You can do this by filtering manually on excel and changing the file extension to a bed file, or you can use the unix tool awk, as was done previously in the Convert_DEpeaks_to_bed.sh script.
 
 Sample script running filtering of 0.01 on the non-adjusted p-value and using Deeptools for H3K27ac Gosselin:
 
