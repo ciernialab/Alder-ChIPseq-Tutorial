@@ -53,6 +53,7 @@ This tutorial is for downloading published PE ChIPSeq files from GEO and process
 			- [Step 8: Make Deeplots heatmap and profile over TSS and DE peaks](#step-8-make-deeplots-heatmap-and-profile-over-tss-and-de-peaks)
 				- [TSS Heatmap Plots](#tss-heatmap-plots)
 				- [DE Peaks Heatmap Plots](#de-peaks-heatmap-plots)
+					- [Experimenting with Filtering](#experimenting-with-filtering)
 
 <!-- /TOC -->
 
@@ -201,9 +202,9 @@ It should say that the job SRAfetch is running
 If you check the contents of the experiment folder, SRAfetch.out should have also been generated. Look inside this file (even while it is still running) to check the progress of the script. The sript prints when a samples starts, progress, and ends. SRAfetch.out also serves as a log to check for errors, etc. This is one of the main advantages of sbatch - the log!
 
     less SRAfetch.out
-    
+
  SRRpull.sh also runs a check on the .sra files to makes sure they were copied over completely. This is stored in output/SRA_checksum/SRAcheck.log <br/>
- ## YOU MUST CHECK THIS - LOOK TO MAKE SURE ALL FILES HAVE 'OK' AND "Database 'SRRNAME.sra' is consistent" LISTED. IF YOU HAVE ANY ERRORS, RERUN. 
+ ## YOU MUST CHECK THIS - LOOK TO MAKE SURE ALL FILES HAVE 'OK' AND "Database 'SRRNAME.sra' is consistent" LISTED. IF YOU HAVE ANY ERRORS, RERUN.
 
 # 6. QC of the Fastq Files
 We need to check the quality of the fastq files both before and after trimming. We use FastQC from https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
@@ -600,7 +601,7 @@ Now that we have our compressed files we can setup our track hub:<br/>
 Track hubs require a webserver to host the files. We can use github to host all files < 25MB. Github supports byte-range access to files when they are accessed via the raw.githubusercontent.com style URLs. To obtain a raw URL to a file already uploaded on Github, click on a file in your repository and click the Raw button. The bigDataUrl field (and any other statement pointing to a URL like bigDataIndex, refUrl, barChartMatrixUrl, etc.) of your trackDb.txt file should use the "raw.githubusercontent.com" style URL. <br/> https://genome.ucsc.edu/goldenPath/help/hgTrackHubHelp.html <br/>
 
 Track hubs can now be specified in a single text file: http://genome.ucsc.edu/goldenPath/help/hgTracksHelp.html#UseOneFile <br/>
-Once this text file is loaded onto github, you can get the RAW url for the text file and then check your hub works by pasting the url into the hub development took and clicking "Check Hub Settings".  http://genome.ucsc.edu/cgi-bin/hgHubConnect?#hubDeveloper
+Once this text file is loaded onto github, you can get the RAW url for the text file and then check your hub works by pasting the url into the hub development tool and clicking "Check Hub Settings".  http://genome.ucsc.edu/cgi-bin/hgHubConnect?#hubDeveloper
 If your hub has no errors you can then click the "View on UCSC browser" to view your hub.<br/>
 
 We have setup a hub using the TrackHubmm10.txt file. The link to this file is: https://raw.githubusercontent.com/ciernialab/Alder-ChIPseq-Tutorial/master/TrackHubmm10.txt <br/>
@@ -615,16 +616,16 @@ This pipeline performs HOMER mergePeaks on a large amount of paired BED files, t
 This simple workflow uses the venn.txt output from HOMER's mergePeaks command to visualize the overlaps between different sets of peaks (such as .bed files from a ChIP-Seq experiment), using the UpSetR package for R version 3.3.0.
 
 If you don't have UpSetR installed, you'll need to install it onto the server using the following commands:
-	
-	module load R 
-	R 
+
+	module load R
+	R
 	install.packages("UpSetR") #install the package
-	
-	#If it asks you to pick a mirror, it doesn't really matter. 
+
+	#If it asks you to pick a mirror, it doesn't really matter.
 	#Try to pick one close (maybe a Canadian or USA one?) and enter the number
-	
+
 	q() #quit R
-	
+
 
 In this example, the venn.txt file would have been created by using a HOMER command such as this:
 
@@ -747,17 +748,25 @@ So it looks like more differences bewteen HDAC1/2KO and WT for H3K9ac regardless
 We can open the DE peak files  and look at several top regions the UCSC genome browser. Do they look different?
 
 #### Step 8: Make Deeplots heatmap and profile over TSS and DE peaks
-These plots use Deeptools computeMatrix, plotHeatmap and plotProfile to plot the average signal over specific regions specified in a bed file.  We will be using the read-depth normalized bigwig files generated from running the UCSCBrowserHOMER.sh script. 
+These plots use Deeptools computeMatrix, plotHeatmap and plotProfile to plot the average signal over specific regions specified in a bed file.  We will be using the read-depth normalized bigwig files generated from running the UCSCBrowserHOMER.sh script.
+
+The bigwig files were made using a resolution size of 10bp, for greater granularity of results. You can see this in the resulting plots, as they will look more jagged (if the profile curves look too smooth, this could suggest oversmoothing/excessive averaging of results due to too low of a resolution, i.e. too high a bp number).
+
+Additionally, the makeUCSCfile program by HOMER produces quite a bit of missing data, so we use the missingDataAsZero and skipZeros options in computeMatrix, to avoid plotting any missing data. You can change these settings if you need to see all the data plotted.
 
 ##### TSS Heatmap Plots
 Plot Normalized signal over the TSS with computeMatrix, plotHeatmap and plotProfile. You first need the coordinates of all the mm10 genes in bed format. To get these go to the UCSC genome browser and select mm10. Go to the table browser and download a bed file for the gene body. Load the bed file into your experiment folder on Alder or use the one already available: mm10.refseq.bed<br/>
-Plot 1kb upstream and 500bp downstream of each TSS in mm10. Plots profiles (mean) and heatmap (each row is a gene in teh mm10.refseq.bed). https://deeptools.readthedocs.io/en/develop/content/tools/computeMatrix.html
+Plot 1kb upstream and 500bp downstream of each TSS in mm10. Plots profiles (mean) and heatmap (each row is a gene in the mm10.refseq.bed). https://deeptools.readthedocs.io/en/develop/content/tools/computeMatrix.html
 
 
     sbatch Geneplots_deeptools.sh
 
+It should look something like this (e.g. for H3K9ac):
+
+![TSS.H3K9ac](Heatmap.mouseTSS.H3K9ac.png)
+
 ##### DE Peaks Heatmap Plots
-Plot Normalized signal over each set of DE peaks with computeMatrix, plotHeatmap and plotProfile. You first need to convert the _diffpeaksOutput.txt files from the getDiffExpression.pl script to bed files. This requires making some formtting changes, sorting and filtering for significant peaks using unix commands. A detailed description of each step is found within the script. This script produces an output bed file for regions that pass an FDR<0.05. <br/>
+Plot Normalized signal over each set of DE peaks with computeMatrix, plotHeatmap and plotProfile. You first need to convert the \_diffpeaksOutput.txt files from the getDiffExpression.pl script to bed files. This requires making some formatting changes, sorting and filtering for significant peaks using unix commands. A detailed description of each step is found within the script. This script produces an output bed file for regions that pass an FDR<0.05. <br/>
 
 	sbatch Convert_DEpeaks_to_bed.sh
 
@@ -767,10 +776,32 @@ Plot 500bp upstream and 500bp downstream of each DE region. Plots profiles (mean
     sbatch DEpeaks_Deeptool_Plots.sh
 
 
-NOTE: There are very few regions that pass FDR < 0.05. Try repeating the DE Peaks Heatmaps with relaxed cutoffs. FDR < 0.1 or the top 100 ranked regions. 
+It should look something like this:
 
+**H3K9ac Gosselin:**
+![DEpeaks.H3K9ac.Gosselin](Heatmap.DEpeaks.H3K9ac_Gosselin.png)
 
+**H3K27ac Gosselin:**
+![DEpeaks.H3K27ac.Gosselin](Heatmap.DEpeaks.H3K27ac_Gosselin.png)
 
+###### Experimenting with Filtering
 
+NOTE: There are sometimes very few regions that pass FDR < 0.05. You can try repeating the DE Peaks Heatmaps with relaxed cutoffs, such as filtering for FDR <= 0.1, or the top 100 ranked regions.
 
+You can change the filtering manually by opening up the text file on excel, or you can change the awk command in the Convert_DEpeaks_to_bed.sh script, e.g.
 
+		awk '{if($19<=0.1) {print}}'
+
+and then running the DEpeaks_Deeptool_Plots.sh script with the new files generated.
+
+In this experiment however, H3K27ac seems to only have 1 peak that passes FDR filtering (this is true even for FDR <= 0.15), which explains why the heatmap looks distorted. In cases like this, you could also try filtering by the non-adjusted p value instead of the FDR corrected value. You can do this by filtering manually on excel and changing the file extension to a bed file, or you can use the unix tool awk, as was done previously in the Convert_DEpeaks_to_bed.sh script.
+
+Sample script running filtering of 0.01 on the non-adjusted p-value and using Deeptools for H3K27ac Gosselin:
+
+		sbatch H3K27acGosselin_filter0.01.sh
+
+It should look something like this:
+
+![DEpeaks.H3K27ac.Gosselin.filtered0.01](Heatmap.DEpeaks.H3K27ac_Gosselin_filtered0.01.png)
+
+which looks considerably better, and more similar to the pattern shown by H3K9ac.
